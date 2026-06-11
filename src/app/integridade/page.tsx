@@ -66,7 +66,7 @@ function FormularioTab() {
 
   if (status === "success") {
     return (
-      <div style={{ padding: "48px", backgroundColor: "#f7f8fa", border: "1px solid #e8e8e8", textAlign: "center", maxWidth: "640px" }}>
+      <div style={{ padding: "48px", backgroundColor: "#f7f8fa", border: "1px solid #e8e8e8", textAlign: "center" }}>
         <div style={{ fontSize: "40px", marginBottom: "16px" }}>✓</div>
         <h3 style={{ fontSize: "18px", fontWeight: 700, color: "#003567", marginBottom: "8px" }}>Mensagem enviada com sigilo</h3>
         <p style={{ fontSize: "14px", color: "#666", lineHeight: 1.7, margin: "0 0 24px" }}>
@@ -81,7 +81,7 @@ function FormularioTab() {
   }
 
   return (
-    <div style={{ maxWidth: "640px" }}>
+    <div>
       <div style={{ backgroundColor: "#f7f8fa", padding: "8px 16px", borderLeft: "3px solid #01A8DD", marginBottom: "32px" }}>
         <p style={{ fontSize: "13px", color: "#555", lineHeight: 1.7, margin: "10px 0" }}>
           Utilize este canal para reportar situações relacionadas a ética, conformidade, conflito de interesses ou qualquer preocupação sobre a conduta do escritório.
@@ -142,13 +142,12 @@ function FormularioTab() {
 
 function EticaTab() {
   return (
-    <div style={{ maxWidth: "800px" }} className="prose-content">
+    <div className="prose-content">
       <Section title="Apresentação">
         O Lopes Mendes Advogados é um escritório fundado sobre princípios sólidos de ética, transparência e comprometimento com a justiça. Este Código de Ética e Integridade consolida os valores e as normas de conduta que orientam todos os nossos colaboradores, advogados, parceiros e prestadores de serviços.
         <br /><br />
         Nosso compromisso com a integridade não é apenas uma exigência regulatória — é parte essencial de quem somos e da maneira como prestamos serviços jurídicos de excelência.
       </Section>
-
       <Section title="1. Nossos Valores Fundamentais">
         <strong>Ética:</strong> Agimos com honestidade, integridade e respeito em todas as nossas relações profissionais e pessoais.<br /><br />
         <strong>Transparência:</strong> Comunicamos com clareza nossas posições, limitações e eventuais conflitos de interesse aos nossos clientes e parceiros.<br /><br />
@@ -156,55 +155,45 @@ function EticaTab() {
         <strong>Confidencialidade:</strong> Protegemos com rigor todas as informações que nos são confiadas por clientes, sem exceção.<br /><br />
         <strong>Respeito:</strong> Valorizamos a dignidade de todas as pessoas, sem discriminação de qualquer natureza.
       </Section>
-
       <Section title="2. Relacionamento com Clientes">
         • Os advogados e colaboradores do Lopes Mendes devem atender os clientes com cordialidade, eficiência e total transparência sobre o andamento dos processos e honorários.<br /><br />
         • É vedada qualquer forma de promessa de resultado judicial ou administrativo.<br /><br />
         • Todo conflito de interesses deve ser identificado e comunicado ao cliente antes do início da representação.<br /><br />
         • O sigilo profissional é inviolável e persiste após o encerramento do mandato.
       </Section>
-
       <Section title="3. Relacionamento entre Colaboradores">
         • O escritório promove um ambiente de trabalho inclusivo, respeitoso e livre de qualquer forma de assédio moral ou sexual.<br /><br />
         • Toda forma de discriminação por gênero, raça, religião, orientação sexual, deficiência ou qualquer outra característica pessoal é expressamente proibida.<br /><br />
         • Encorajamos o trabalho colaborativo, o compartilhamento de conhecimento e o respeito às opiniões divergentes.<br /><br />
         • A liderança do escritório deve servir de exemplo em conduta ética e profissional.
       </Section>
-
       <Section title="4. Conflito de Interesses">
         Entendemos por conflito de interesses qualquer situação em que interesses pessoais, familiares ou financeiros possam interferir — ou aparentar interferir — no exercício imparcial das funções profissionais.<br /><br />
         • Todo colaborador deve comunicar imediatamente ao Gerente de Integridade qualquer situação que possa configurar conflito de interesses.<br /><br />
         • É vedado representar partes com interesses opostos no mesmo processo ou matéria jurídica.<br /><br />
         • Presentes e benefícios de terceiros acima do valor de R$ 100,00 devem ser reportados e, em regra, recusados.
       </Section>
-
       <Section title="5. Confidencialidade e Proteção de Dados">
         • Todos os colaboradores têm obrigação permanente de manter o sigilo sobre informações confidenciais dos clientes, mesmo após o encerramento do vínculo profissional.<br /><br />
         • O uso, compartilhamento ou divulgação de informações confidenciais para fins pessoais ou em benefício de terceiros é expressamente proibido.<br /><br />
         • O tratamento de dados pessoais observa integralmente a Lei Geral de Proteção de Dados (LGPD — Lei nº 13.709/2018) e as normas internas de privacidade.
       </Section>
-
       <Section title="6. Conduta Profissional e Compliance">
         • É obrigatório o cumprimento integral das normas do Estatuto da OAB, do Código de Ética e Disciplina da OAB e da legislação vigente.<br /><br />
         • Atos de corrupção, suborno, fraude ou lavagem de dinheiro são absolutamente vedados e sujeitos a medidas disciplinares severas, além das sanções legais aplicáveis.<br /><br />
         • O escritório adota políticas de Prevenção à Lavagem de Dinheiro (PLD) e realiza a devida diligência sobre clientes e operações.<br /><br />
         • Qualquer ato ilícito ou antiético do qual o colaborador tome conhecimento deve ser comunicado através do nosso Canal de Integridade.
       </Section>
-
       <Section title="7. Canal de Denúncias e Não Retaliação">
         O escritório disponibiliza um Canal de Integridade para que colaboradores, clientes e parceiros possam reportar violações a este Código de forma confidencial ou anônima.<br /><br />
         • Todas as comunicações recebidas serão investigadas com seriedade e imparcialidade.<br /><br />
         • É expressamente proibida qualquer forma de retaliação contra quem reporte, de boa-fé, uma preocupação ou violação ética.<br /><br />
         • Para acionar o canal: utilize o formulário nesta página ou escreva diretamente para <strong>compliance@lopesmendes.adv.br</strong>.
       </Section>
-
       <Section title="8. Sanções e Medidas Disciplinares">
         O descumprimento deste Código poderá acarretar medidas disciplinares proporcionais à gravidade da infração, incluindo advertência, suspensão ou desligamento, além das sanções cíveis, penais e disciplinares previstas em lei.
       </Section>
-
-      <style>{`
-        .prose-content p, .prose-content br { line-height: 1.8; }
-      `}</style>
+      <style>{`.prose-content p, .prose-content br { line-height: 1.8; }`}</style>
     </div>
   );
 }
@@ -213,16 +202,14 @@ function EticaTab() {
 
 function PrivacidadeTab() {
   return (
-    <div style={{ maxWidth: "800px" }}>
+    <div>
       <p style={{ fontSize: "13px", color: "#888", marginBottom: "32px" }}>
         Última atualização: junho de 2026 · Vigência: a partir de junho de 2026
       </p>
-
       <Section title="1. Quem Somos">
         O Lopes Mendes Advogados (CNPJ 30.116.262/0001-87), com sede na Praça Floriano, 19 — 22º Andar, Centro, Rio de Janeiro/RJ, CEP 20031-924, é o controlador dos dados pessoais tratados no âmbito desta Política de Privacidade.<br /><br />
         Nosso Encarregado de Proteção de Dados (DPO) pode ser contatado pelo e-mail <strong>privacidade@lopesmendes.adv.br</strong>.
       </Section>
-
       <Section title="2. Dados Pessoais que Coletamos">
         Coletamos dados pessoais nas seguintes situações:<br /><br />
         <strong>a) Clientes e potenciais clientes:</strong> nome, CPF/CNPJ, endereço, e-mail, telefone, dados financeiros e patrimoniais, documentos de identificação e informações processuais necessárias à prestação dos serviços jurídicos contratados.<br /><br />
@@ -230,7 +217,6 @@ function PrivacidadeTab() {
         <strong>c) Candidatos (Trabalhe Conosco):</strong> nome, e-mail, telefone, currículo e demais informações fornecidas voluntariamente no processo seletivo.<br /><br />
         <strong>d) Formulários de contato e integridade:</strong> nome (quando fornecido), e-mail e conteúdo da mensagem.
       </Section>
-
       <Section title="3. Finalidade e Base Legal do Tratamento">
         Tratamos dados pessoais com as seguintes finalidades e bases legais (art. 7º da LGPD):<br /><br />
         • <strong>Execução de contrato</strong> — para prestar os serviços jurídicos contratados pelo cliente;<br />
@@ -238,18 +224,15 @@ function PrivacidadeTab() {
         • <strong>Legítimo interesse</strong> — para responder dúvidas e solicitações enviadas por formulários, gestão interna e melhoria dos nossos serviços;<br />
         • <strong>Consentimento</strong> — para envio de comunicações de marketing, quando o titular assim autorizar expressamente.
       </Section>
-
       <Section title="4. Compartilhamento de Dados">
         Não vendemos, alugamos ou cedemos dados pessoais a terceiros para fins comerciais. Podemos compartilhar dados nas seguintes situações:<br /><br />
         • <strong>Prestadores de serviços</strong> (processadores de dados) que atuam em nosso nome, como provedores de e-mail, sistemas de gestão e serviços de armazenamento em nuvem, sempre sob contrato com obrigações equivalentes de proteção;<br />
         • <strong>Autoridades públicas e órgãos reguladores</strong>, quando exigido por lei, decisão judicial ou regulação da OAB;<br />
         • <strong>Terceiros em processos judiciais</strong>, na medida estritamente necessária para a defesa dos interesses do cliente.
       </Section>
-
       <Section title="5. Transferência Internacional de Dados">
         Quando aplicável, a transferência de dados pessoais para o exterior observa os mecanismos previstos na LGPD, incluindo a adoção de cláusulas contratuais padrão ou a verificação de que o país de destino oferece grau de proteção adequado.
       </Section>
-
       <Section title="6. Prazo de Retenção dos Dados">
         Mantemos os dados pessoais pelo tempo necessário para as finalidades descritas nesta Política, observando os seguintes critérios:<br /><br />
         • <strong>Dados de clientes:</strong> enquanto durar a relação jurídica e pelo prazo prescricional aplicável à matéria objeto do mandato (em regra, até 10 anos após o encerramento);<br />
@@ -257,7 +240,6 @@ function PrivacidadeTab() {
         • <strong>Logs e dados de navegação:</strong> até 6 meses, conforme o Marco Civil da Internet (Lei nº 12.965/2014);<br />
         • <strong>Dados de formulários de contato:</strong> até 2 anos ou até o cumprimento da finalidade, o que ocorrer primeiro.
       </Section>
-
       <Section title="7. Seus Direitos como Titular">
         Nos termos do art. 18 da LGPD, você tem os seguintes direitos:<br /><br />
         • <strong>Confirmação e acesso:</strong> saber se tratamos seus dados e obter cópia;<br />
@@ -269,31 +251,25 @@ function PrivacidadeTab() {
         • <strong>Informação sobre compartilhamento:</strong> saber com quais entidades públicas ou privadas seus dados são compartilhados.<br /><br />
         Para exercer seus direitos, entre em contato pelo e-mail <strong>privacidade@lopesmendes.adv.br</strong>. Responderemos em até 15 dias úteis.
       </Section>
-
       <Section title="8. Cookies e Tecnologias Similares">
         Nosso site utiliza cookies para funcionamento básico (sessão), análise de desempenho e melhoria da experiência do usuário. Você pode configurar seu navegador para recusar cookies, embora isso possa limitar determinadas funcionalidades do site.<br /><br />
         Não utilizamos cookies para fins publicitários ou rastreamento entre sites de terceiros.
       </Section>
-
       <Section title="9. Segurança da Informação">
         Adotamos medidas técnicas e organizacionais adequadas para proteger os dados pessoais contra acesso não autorizado, alteração, divulgação ou destruição indevida. Entre as medidas implementadas destacam-se: controles de acesso por perfil, criptografia em trânsito (TLS), política de senhas e backups periódicos.<br /><br />
         Em caso de incidente de segurança com potencial impacto aos titulares, notificaremos a Autoridade Nacional de Proteção de Dados (ANPD) e, quando aplicável, os próprios titulares, nos prazos previstos na regulamentação.
       </Section>
-
       <Section title="10. Dados de Menores de Idade">
         Nossos serviços não são destinados a menores de 18 anos. Não coletamos intencionalmente dados pessoais de crianças ou adolescentes. Caso identifiquemos tal situação, os dados serão eliminados imediatamente, salvo exigência legal em contrário.
       </Section>
-
       <Section title="11. Contato com o Encarregado (DPO)">
         Para exercer seus direitos, esclarecer dúvidas ou reportar preocupações relacionadas ao tratamento de dados pessoais, entre em contato com nosso Encarregado de Proteção de Dados:<br /><br />
         <strong>E-mail:</strong> privacidade@lopesmendes.adv.br<br />
         <strong>Endereço:</strong> Praça Floriano, 19 — 22º Andar, Centro, Rio de Janeiro — RJ, CEP 20031-924
       </Section>
-
       <Section title="12. Alterações nesta Política">
         Esta Política de Privacidade pode ser atualizada periodicamente para refletir mudanças em nossas práticas ou na legislação aplicável. A versão mais recente estará sempre disponível nesta página, com indicação da data da última atualização. Em caso de alterações relevantes, notificaremos os titulares pelos canais de contato disponíveis.
       </Section>
-
       <Section title="13. Legislação Aplicável e Foro">
         Esta Política é regida pela legislação brasileira, em especial pela Lei Geral de Proteção de Dados (Lei nº 13.709/2018). Para dirimir eventuais controvérsias, fica eleito o foro da Comarca do Rio de Janeiro — RJ.
       </Section>
@@ -314,6 +290,35 @@ function Section({ title, children }: { title: string; children: React.ReactNode
   );
 }
 
+// ─── Channel Card ─────────────────────────────────────────────────────────────
+
+function ChannelCard({ eyebrow, title, desc, email }: { eyebrow: string; title: string; desc: string; email: string }) {
+  return (
+    <div style={{ backgroundColor: "#003567", padding: "28px", position: "relative", overflow: "hidden" }}>
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img src="/images/grafismo/diagonal-lines.svg" alt="" aria-hidden="true"
+        style={{ position: "absolute", top: 0, right: 0, height: "100%", width: "auto", opacity: 0.06, pointerEvents: "none" }} />
+      <div style={{ position: "relative", zIndex: 1 }}>
+        <div style={{ width: "32px", height: "3px", background: "linear-gradient(90deg, #01A8DD, #004C90)", marginBottom: "16px" }} />
+        <p style={{ fontSize: "10px", fontWeight: 700, letterSpacing: "2px", textTransform: "uppercase", color: "#01A8DD", marginBottom: "6px" }}>
+          {eyebrow}
+        </p>
+        <h3 style={{ fontSize: "15px", fontWeight: 700, color: "#fff", marginBottom: "10px", lineHeight: 1.3 }}>
+          {title}
+        </h3>
+        <p style={{ fontSize: "12px", color: "rgba(255,255,255,0.6)", lineHeight: 1.65, marginBottom: "16px" }}>
+          {desc}
+        </p>
+        <a href={`mailto:${email}`}
+          style={{ display: "inline-flex", alignItems: "center", gap: "6px", color: "#01A8DD", fontSize: "12px", fontWeight: 700, textDecoration: "none", wordBreak: "break-all" as const }}>
+          <MailIcon style={{ width: "13px", height: "13px", flexShrink: 0 }} />
+          {email}
+        </a>
+      </div>
+    </div>
+  );
+}
+
 // ─── Page ─────────────────────────────────────────────────────────────────────
 
 export default function IntegridadePage() {
@@ -322,12 +327,12 @@ export default function IntegridadePage() {
   return (
     <>
       <style>{`
+        /* Tab bar */
         .integ-tab-bar {
           background: white;
           border-bottom: 1px solid #e9ecf5;
           padding: 0 80px;
           display: flex;
-          gap: 0;
           overflow-x: auto;
         }
         .integ-tab {
@@ -345,29 +350,43 @@ export default function IntegridadePage() {
         }
         .integ-tab:hover { color: #003567; }
         .integ-tab-active { color: #003567; border-bottom-color: #01A8DD; }
-        .integ-content { background: white; padding: 60px 80px; }
-        .integ-channels {
-          background: #f7f8fa;
-          padding: 56px 80px;
-          border-top: 1px solid #e9ecf5;
-        }
-        .integ-channel-grid {
+
+        /* Two-column layout */
+        .integ-body {
           display: grid;
-          grid-template-columns: repeat(2, 1fr);
-          gap: 24px;
-          max-width: 900px;
+          grid-template-columns: 1fr 300px;
+          background: white;
+          min-height: 600px;
         }
-        .integ-channel-card {
-          background: #003567;
-          padding: 32px;
-          position: relative;
-          overflow: hidden;
+        .integ-main {
+          padding: 56px 64px 72px 80px;
+          border-right: 1px solid #e9ecf5;
+        }
+        .integ-sidebar {
+          padding: 48px 32px;
+          background: #f7f8fa;
+        }
+        .integ-sidebar-sticky {
+          position: sticky;
+          top: 90px;
+          display: flex;
+          flex-direction: column;
+          gap: 16px;
+        }
+
+        /* Form helpers */
+        .integ-form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+        @media (max-width: 1024px) {
+          .integ-body { grid-template-columns: 1fr 260px; }
+          .integ-main { padding: 48px 40px 64px 48px; }
         }
         @media (max-width: 768px) {
           .integ-tab-bar { padding: 0 24px; }
-          .integ-content { padding: 40px 24px; }
-          .integ-channels { padding: 40px 24px; }
-          .integ-channel-grid { grid-template-columns: 1fr !important; }
+          .integ-body { grid-template-columns: 1fr; }
+          .integ-main { padding: 40px 24px !important; border-right: none; border-bottom: 1px solid #e9ecf5; }
+          .integ-sidebar { padding: 40px 24px !important; }
+          .integ-sidebar-sticky { position: static; }
           .integ-form-row { grid-template-columns: 1fr !important; }
         }
       `}</style>
@@ -394,81 +413,50 @@ export default function IntegridadePage() {
         ))}
       </div>
 
-      {/* Tab content */}
-      <div className="integ-content">
-        <RevealSection key={activeTab}>
-          {activeTab === "formulario" && <FormularioTab />}
-          {activeTab === "etica" && <EticaTab />}
-          {activeTab === "privacidade" && <PrivacidadeTab />}
-        </RevealSection>
-      </div>
+      {/* Body: tab content + sidebar */}
+      <div className="integ-body">
 
-      {/* Canais diretos */}
-      <div className="integ-channels">
-        <div style={{ maxWidth: "900px" }}>
-          <RevealSection>
-            <p className="gradient-text" style={{ fontSize: "11px", fontWeight: 700, letterSpacing: "3px", textTransform: "uppercase", marginBottom: "12px" }}>
-              Canais diretos
-            </p>
-            <h2 style={{ fontSize: "28px", fontWeight: 300, color: "#003567", marginBottom: "32px" }}>
-              Fale diretamente com nossa equipe
-            </h2>
+        {/* Left: tab content */}
+        <div className="integ-main">
+          <RevealSection key={activeTab}>
+            {activeTab === "formulario" && <FormularioTab />}
+            {activeTab === "etica" && <EticaTab />}
+            {activeTab === "privacidade" && <PrivacidadeTab />}
           </RevealSection>
+        </div>
 
-          <div className="integ-channel-grid">
-            {/* DPO */}
-            <RevealSection from="left">
-            <div className="integ-channel-card">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/images/grafismo/diagonal-lines.svg" alt="" aria-hidden="true"
-                style={{ position: "absolute", top: 0, right: 0, height: "100%", width: "auto", opacity: 0.06, pointerEvents: "none" }} />
-              <div style={{ position: "relative", zIndex: 1 }}>
-                <div style={{ width: "40px", height: "3px", background: "linear-gradient(90deg, #01A8DD, #004C90)", marginBottom: "20px" }} />
-                <p style={{ fontSize: "11px", fontWeight: 700, letterSpacing: "2px", textTransform: "uppercase", color: "#01A8DD", marginBottom: "8px" }}>
-                  Proteção de Dados
-                </p>
-                <h3 style={{ fontSize: "17px", fontWeight: 700, color: "#fff", marginBottom: "10px" }}>
-                  Encarregado de Proteção de Dados
-                </h3>
-                <p style={{ fontSize: "13px", color: "rgba(255,255,255,0.65)", lineHeight: 1.7, marginBottom: "20px" }}>
-                  Para exercer seus direitos como titular de dados pessoais, esclarecer dúvidas sobre nossa Política de Privacidade ou reportar incidentes de segurança.
-                </p>
-                <a href="mailto:privacidade@lopesmendes.adv.br"
-                  style={{ display: "inline-flex", alignItems: "center", gap: "8px", color: "#01A8DD", fontSize: "13px", fontWeight: 700, textDecoration: "none" }}>
-                  <MailIcon style={{ width: "15px", height: "15px" }} />
-                  privacidade@lopesmendes.adv.br
-                </a>
-              </div>
-            </div>
+        {/* Right: sticky channels sidebar */}
+        <div className="integ-sidebar">
+          <div className="integ-sidebar-sticky">
+            <RevealSection from="right">
+              <p className="gradient-text" style={{ fontSize: "10px", fontWeight: 700, letterSpacing: "3px", textTransform: "uppercase", marginBottom: "8px" }}>
+                Canais diretos
+              </p>
+              <h2 style={{ fontSize: "18px", fontWeight: 300, color: "#003567", marginBottom: "20px", lineHeight: 1.3 }}>
+                Fale diretamente com nossa equipe
+              </h2>
             </RevealSection>
 
-            {/* Gerente de Integridade */}
-            <RevealSection from="right" delay={100}>
-            <div className="integ-channel-card">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/images/grafismo/diagonal-lines.svg" alt="" aria-hidden="true"
-                style={{ position: "absolute", top: 0, right: 0, height: "100%", width: "auto", opacity: 0.06, pointerEvents: "none" }} />
-              <div style={{ position: "relative", zIndex: 1 }}>
-                <div style={{ width: "40px", height: "3px", background: "linear-gradient(90deg, #01A8DD, #004C90)", marginBottom: "20px" }} />
-                <p style={{ fontSize: "11px", fontWeight: 700, letterSpacing: "2px", textTransform: "uppercase", color: "#01A8DD", marginBottom: "8px" }}>
-                  Compliance
-                </p>
-                <h3 style={{ fontSize: "17px", fontWeight: 700, color: "#fff", marginBottom: "10px" }}>
-                  Gerente de Integridade
-                </h3>
-                <p style={{ fontSize: "13px", color: "rgba(255,255,255,0.65)", lineHeight: 1.7, marginBottom: "20px" }}>
-                  Para reportar questões éticas, conflitos de interesse, suspeitas de irregularidades ou qualquer preocupação relacionada à conduta e conformidade do escritório.
-                </p>
-                <a href="mailto:compliance@lopesmendes.adv.br"
-                  style={{ display: "inline-flex", alignItems: "center", gap: "8px", color: "#01A8DD", fontSize: "13px", fontWeight: 700, textDecoration: "none" }}>
-                  <MailIcon style={{ width: "15px", height: "15px" }} />
-                  compliance@lopesmendes.adv.br
-                </a>
-              </div>
-            </div>
+            <RevealSection from="right" delay={80}>
+              <ChannelCard
+                eyebrow="Proteção de Dados"
+                title="Encarregado de Proteção de Dados (DPO)"
+                desc="Para exercer seus direitos como titular de dados pessoais ou reportar incidentes de segurança."
+                email="privacidade@lopesmendes.adv.br"
+              />
+            </RevealSection>
+
+            <RevealSection from="right" delay={160}>
+              <ChannelCard
+                eyebrow="Compliance"
+                title="Gerente de Integridade"
+                desc="Para reportar questões éticas, conflitos de interesse ou suspeitas de irregularidades."
+                email="compliance@lopesmendes.adv.br"
+              />
             </RevealSection>
           </div>
         </div>
+
       </div>
 
       <Footer />
