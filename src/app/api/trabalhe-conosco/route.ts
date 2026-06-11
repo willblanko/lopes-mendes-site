@@ -77,7 +77,7 @@ export async function POST(request: NextRequest) {
       </div>
     `;
 
-    await resend.emails.send({
+    const { data, error: resendError } = await resend.emails.send({
       from: "Lopes Mendes — Trabalhe Conosco <curriculos@lopesmendes.adv.br>",
       to: ["contato@lopesmendes.adv.br"],
       replyTo: email,
@@ -91,7 +91,16 @@ export async function POST(request: NextRequest) {
       ],
     });
 
-    return NextResponse.json({ success: true });
+    if (resendError) {
+      console.error("[trabalhe-conosco] Resend error:", resendError);
+      return NextResponse.json(
+        { error: `Erro ao enviar e-mail: ${resendError.message}` },
+        { status: 500 }
+      );
+    }
+
+    console.log("[trabalhe-conosco] E-mail enviado, id:", data?.id);
+    return NextResponse.json({ success: true, id: data?.id });
   } catch (error) {
     console.error("[trabalhe-conosco] Erro ao enviar e-mail:", error);
     return NextResponse.json({ error: "Erro interno ao processar candidatura. Tente novamente." }, { status: 500 });
