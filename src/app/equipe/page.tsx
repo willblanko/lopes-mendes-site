@@ -1,282 +1,192 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useRef, useState, useEffect, useCallback } from "react";
 import Image from "next/image";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { PageHero } from "@/components/PageHero";
 
-// ─── Types ────────────────────────────────────────────────────────────────────
-
-interface Member {
-  name: string;
-  role: string;
-  group: string;
-  photo: string;
-}
-
 // ─── Data ─────────────────────────────────────────────────────────────────────
 
-const teamGroups: { group: string; members: Member[] }[] = [
-  {
-    group: "Sócios",
-    members: [
-      { name: "Isaac Lopes", role: "Sócio Fundador", group: "Sócios", photo: "/images/team/Isaac_Lopes.png" },
-      { name: "Marco Aurélio Mendes", role: "Sócio Fundador", group: "Sócios", photo: "/images/team/Marco_Aurelio_Mendes.png" },
-    ],
-  },
-  {
-    group: "Cível",
-    members: [
-      { name: "Alex Ribeiro", role: "Liderança Cível", group: "Cível", photo: "/images/team/Alex_Ribeiro.png" },
-      { name: "Daniela de Holanda", role: "Advogada", group: "Cível", photo: "/images/team/Daniela_Holanda.png" },
-      { name: "João Nascimento", role: "Advogado", group: "Cível", photo: "/images/team/Joao_Nascimento.png" },
-      { name: "Antônio Egito", role: "Advogado", group: "Cível", photo: "/images/team/Antonio_Egito.png" },
-      { name: "Lyvia Duarte", role: "Advogada", group: "Cível", photo: "/images/team/Lyvia_Duarte.png" },
-      { name: "Vitória Rebello", role: "Advogada", group: "Cível", photo: "/images/team/Vitoria_Rebello.png" },
-      { name: "Giovana Vasconcelos", role: "Estagiária", group: "Cível", photo: "/images/team/Giovana_Vasconcelos.png" },
-    ],
-  },
-  {
-    group: "Trabalhista",
-    members: [
-      { name: "Raphael Pitta", role: "Advogado", group: "Trabalhista", photo: "/images/team/Raphael_Pitta.png" },
-      { name: "Gustavo Feitoza", role: "Advogado", group: "Trabalhista", photo: "/images/team/Gustavo_Feitoza.png" },
-      { name: "Alex Sander Muniz", role: "Advogado", group: "Trabalhista", photo: "/images/team/Alex_Sander_Muniz.png" },
-      { name: "Taiane Xavier", role: "Advogada", group: "Trabalhista", photo: "/images/team/Taiane_Xavier.png" },
-      { name: "Maria Clara", role: "Estagiária", group: "Trabalhista", photo: "/images/team/Maria_Clara.png" },
-    ],
-  },
-  {
-    group: "Comercial",
-    members: [
-      { name: "Patricia Madeira", role: "Comercial", group: "Comercial", photo: "/images/team/Patricia_Madeira.png" },
-      { name: "Luciano Arsenio", role: "Comercial", group: "Comercial", photo: "/images/team/Luciano_Arsenio.png" },
-    ],
-  },
-  {
-    group: "Administrativo",
-    members: [
-      { name: "Ana Albuquerque", role: "Administrativo", group: "Administrativo", photo: "/images/team/Ana_Albuquerque.png" },
-      { name: "Marcia Lameira", role: "Auxiliar Administrativo", group: "Administrativo", photo: "/images/team/Marcia_Lameira.png" },
-      { name: "Renan Quintaneiro", role: "Controller", group: "Administrativo", photo: "/images/team/Renan_Quintaneiro.png" },
-      { name: "Emily Carolina", role: "Auxiliar Jurídico", group: "Administrativo", photo: "/images/team/Emily_Carolina.png" },
-      { name: "Willian Pereira", role: "Analista de TI", group: "Administrativo", photo: "/images/team/Willian_Pereira.png" },
-    ],
-  },
-  {
-    group: "Serviços Gerais",
-    members: [
-      { name: "Luciana Martins", role: "Governança de Serviços Gerais", group: "Serviços Gerais", photo: "/images/team/Luciana_Martins.png" },
-    ],
-  },
+const members = [
+  { name: "Isaac Lopes", role: "Sócio Fundador", photo: "/images/team/Isaac_Lopes.png" },
+  { name: "Marco Aurélio Mendes", role: "Sócio Fundador", photo: "/images/team/Marco_Aurelio_Mendes.png" },
+  { name: "Alex Ribeiro", role: "Liderança Cível", photo: "/images/team/Alex_Ribeiro.png" },
+  { name: "Daniela de Holanda", role: "Advogada", photo: "/images/team/Daniela_Holanda.png" },
+  { name: "João Nascimento", role: "Advogado", photo: "/images/team/Joao_Nascimento.png" },
+  { name: "Antônio Egito", role: "Advogado", photo: "/images/team/Antonio_Egito.png" },
+  { name: "Lyvia Duarte", role: "Advogada", photo: "/images/team/Lyvia_Duarte.png" },
+  { name: "Vitória Rebello", role: "Advogada", photo: "/images/team/Vitoria_Rebello.png" },
+  { name: "Giovana Vasconcelos", role: "Estagiária", photo: "/images/team/Giovana_Vasconcelos.png" },
+  { name: "Raphael Pitta", role: "Advogado", photo: "/images/team/Raphael_Pitta.png" },
+  { name: "Gustavo Feitoza", role: "Advogado", photo: "/images/team/Gustavo_Feitoza.png" },
+  { name: "Alex Sander Muniz", role: "Advogado", photo: "/images/team/Alex_Sander_Muniz.png" },
+  { name: "Taiane Xavier", role: "Advogada", photo: "/images/team/Taiane_Xavier.png" },
+  { name: "Maria Clara", role: "Estagiária", photo: "/images/team/Maria_Clara.png" },
+  { name: "Patricia Madeira", role: "Comercial", photo: "/images/team/Patricia_Madeira.png" },
+  { name: "Luciano Arsenio", role: "Comercial", photo: "/images/team/Luciano_Arsenio.png" },
+  { name: "Ana Albuquerque", role: "Administrativo", photo: "/images/team/Ana_Albuquerque.png" },
+  { name: "Marcia Lameira", role: "Auxiliar Administrativo", photo: "/images/team/Marcia_Lameira.png" },
+  { name: "Renan Quintaneiro", role: "Controller", photo: "/images/team/Renan_Quintaneiro.png" },
+  { name: "Emily Carolina", role: "Auxiliar Jurídico", photo: "/images/team/Emily_Carolina.png" },
+  { name: "Willian Pereira", role: "Analista de TI", photo: "/images/team/Willian_Pereira.png" },
+  { name: "Luciana Martins", role: "Governança de Serviços Gerais", photo: "/images/team/Luciana_Martins.png" },
 ];
 
-const allMembers = teamGroups.flatMap((g) => g.members);
-const groupNames = teamGroups.map((g) => g.group);
-
-// ─── MemberCard ───────────────────────────────────────────────────────────────
-
-function MemberCard({ member }: { member: Member }) {
-  return (
-    <div className="member-card">
-      <div className="member-card-photo-wrap">
-        <Image
-          src={member.photo}
-          alt={member.name}
-          fill
-          className="member-card-photo"
-          sizes="(max-width: 540px) 50vw, (max-width: 900px) 33vw, (max-width: 1200px) 25vw, 20vw"
-        />
-        <div className="member-card-overlay">
-          <span className="member-card-name">{member.name}</span>
-        </div>
-      </div>
-      <div className="member-card-info">
-        <span className="member-card-role">{member.role}</span>
-      </div>
-    </div>
-  );
-}
-
-// ─── MemberGroup ──────────────────────────────────────────────────────────────
-
-function MemberGroup({ title, members }: { title: string; members: Member[] }) {
-  if (members.length === 0) return null;
-  return (
-    <div className="member-group">
-      <h2 className="member-group-heading">{title}</h2>
-      <div className="member-grid">
-        {members.map((m) => (
-          <MemberCard key={m.name} member={m} />
-        ))}
-      </div>
-    </div>
-  );
-}
+const CARD_WIDTH = 260;
+const CARD_GAP = 24;
+const STEP = CARD_WIDTH + CARD_GAP;
 
 // ─── Page ─────────────────────────────────────────────────────────────────────
 
 export default function EquipePage() {
-  const [activeGroup, setActiveGroup] = useState<string>("all");
-  const [searchInput, setSearchInput] = useState("");
-  const [searchQuery, setSearchQuery] = useState("");
+  const trackRef = useRef<HTMLDivElement>(null);
+  const [offset, setOffset] = useState(0);
+  const [isDragging, setIsDragging] = useState(false);
+  const dragStart = useRef(0);
+  const dragOffset = useRef(0);
+  const autoRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
-  const filteredMembers = useMemo(() => {
-    return allMembers.filter((m) => {
-      const matchesGroup = activeGroup === "all" || m.group === activeGroup;
-      const matchesSearch =
-        searchQuery === "" ||
-        m.name.toLowerCase().includes(searchQuery.toLowerCase());
-      return matchesGroup && matchesSearch;
+  const maxOffset = -(members.length * STEP - CARD_GAP);
+
+  const clamp = useCallback((val: number) => Math.min(0, Math.max(maxOffset, val)), [maxOffset]);
+
+  // auto-scroll
+  useEffect(() => {
+    autoRef.current = setInterval(() => {
+      setOffset((prev) => {
+        const next = prev - STEP;
+        return next < maxOffset ? 0 : next;
+      });
+    }, 3000);
+    return () => { if (autoRef.current) clearInterval(autoRef.current); };
+  }, [maxOffset]);
+
+  function pauseAuto() {
+    if (autoRef.current) clearInterval(autoRef.current);
+  }
+  function resumeAuto() {
+    autoRef.current = setInterval(() => {
+      setOffset((prev) => {
+        const next = prev - STEP;
+        return next < maxOffset ? 0 : next;
+      });
+    }, 3000);
+  }
+
+  function prev() {
+    pauseAuto();
+    setOffset((v) => clamp(v + STEP));
+    resumeAuto();
+  }
+  function next() {
+    pauseAuto();
+    setOffset((v) => {
+      const n = v - STEP;
+      return n < maxOffset ? 0 : n;
     });
-  }, [activeGroup, searchQuery]);
-
-  const visibleGroups = useMemo(() => {
-    return activeGroup === "all"
-      ? teamGroups
-      : teamGroups.filter((g) => g.group === activeGroup);
-  }, [activeGroup]);
-
-  function handleSearch() {
-    setSearchQuery(searchInput);
+    resumeAuto();
   }
 
-  function handleKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
-    if (e.key === "Enter") handleSearch();
+  // drag / touch
+  function onPointerDown(e: React.PointerEvent) {
+    setIsDragging(true);
+    dragStart.current = e.clientX;
+    dragOffset.current = offset;
+    pauseAuto();
+    (e.target as HTMLElement).setPointerCapture(e.pointerId);
   }
-
-  function getGroupMembers(group: string) {
-    return filteredMembers.filter((m) => m.group === group);
+  function onPointerMove(e: React.PointerEvent) {
+    if (!isDragging) return;
+    const delta = e.clientX - dragStart.current;
+    setOffset(clamp(dragOffset.current + delta));
+  }
+  function onPointerUp(e: React.PointerEvent) {
+    if (!isDragging) return;
+    setIsDragging(false);
+    const delta = e.clientX - dragStart.current;
+    // snap to nearest card
+    const raw = dragOffset.current + delta;
+    const snapped = Math.round(raw / STEP) * STEP;
+    setOffset(clamp(snapped));
+    resumeAuto();
   }
 
   return (
     <>
       <style>{`
-        /* ── Filter bar ───────────────────────────────── */
-        .equipe-filter-bar {
-          background-color: white;
-          border-bottom: 1px solid #e9ecf5;
-          padding: 20px 80px;
+        .carousel-section {
+          background-color: #f7f8fa;
+          padding: 60px 0 80px;
+          overflow: hidden;
+        }
+        .carousel-header {
+          padding: 0 80px;
           display: flex;
           align-items: center;
           justify-content: space-between;
-          gap: 24px;
-          flex-wrap: wrap;
+          margin-bottom: 40px;
         }
-        .equipe-tabs {
-          display: flex;
-          align-items: center;
-          gap: 6px;
-          flex-wrap: wrap;
-        }
-        .equipe-tab {
-          padding: 7px 18px;
-          border-radius: 100px;
-          font-size: 13px;
-          font-weight: 500;
-          cursor: pointer;
-          border: none;
-          transition: background-color 0.2s, color 0.2s;
-          font-family: Lato, sans-serif;
-          white-space: nowrap;
-        }
-        .equipe-tab-active {
-          background-color: #003567;
-          color: white;
-        }
-        .equipe-tab-inactive {
-          background-color: transparent;
-          color: #3b3e43;
-        }
-        .equipe-tab-inactive:hover {
+        .carousel-title {
+          font-size: 18px;
+          font-weight: 700;
           color: #003567;
-          background-color: #f0f3fa;
-        }
-        .equipe-search-wrap {
-          display: flex;
-          align-items: center;
-          border: 1px solid #c0c4d6;
-          border-radius: 4px;
-          overflow: hidden;
-        }
-        .equipe-search-input {
-          border: none;
-          outline: none;
-          font-size: 13px;
           font-family: Lato, sans-serif;
-          color: #3b3e43;
-          background: transparent;
-          width: 200px;
-          padding: 8px 12px;
+          border-left: 3px solid #01A8DD;
+          padding-left: 14px;
+          margin: 0;
         }
-        .equipe-search-input::placeholder {
-          color: #a0a4b0;
+        .carousel-controls {
+          display: flex;
+          gap: 10px;
         }
-        .equipe-search-btn {
-          border: none;
-          background-color: #003567;
-          color: white;
-          width: 38px;
-          height: 38px;
+        .carousel-btn {
+          width: 42px;
+          height: 42px;
+          border-radius: 50%;
+          border: 2px solid #003567;
+          background: white;
+          color: #003567;
           cursor: pointer;
           display: flex;
           align-items: center;
           justify-content: center;
-          flex-shrink: 0;
-          transition: background-color 0.2s;
-          font-size: 16px;
-        }
-        .equipe-search-btn:hover {
-          background-color: #004C90;
-        }
-
-        /* ── Grid section ─────────────────────────────── */
-        .equipe-grid-section {
-          background-color: #f7f8fa;
-          padding: 60px 80px;
-        }
-        .member-group {
-          margin-bottom: 64px;
-        }
-        .member-group:last-child {
-          margin-bottom: 0;
-        }
-        .member-group-heading {
           font-size: 18px;
-          font-weight: 700;
-          color: #003567;
-          border-left: 3px solid #01A8DD;
-          padding-left: 14px;
-          margin: 0 0 32px 0;
-          font-family: Lato, sans-serif;
-          letter-spacing: 0.5px;
+          transition: background 0.2s, color 0.2s;
+          flex-shrink: 0;
         }
-        .member-grid {
-          display: grid;
-          grid-template-columns: repeat(4, 1fr);
-          gap: 24px;
+        .carousel-btn:hover {
+          background: #003567;
+          color: white;
         }
-
-        /* ── Member card ──────────────────────────────── */
+        .carousel-viewport {
+          overflow: hidden;
+          padding: 0 80px;
+          cursor: grab;
+          user-select: none;
+        }
+        .carousel-viewport:active {
+          cursor: grabbing;
+        }
+        .carousel-track {
+          display: flex;
+          gap: ${CARD_GAP}px;
+          will-change: transform;
+        }
         .member-card {
-          display: block;
-          color: inherit;
-        }
-        .member-card:hover .member-card-photo {
-          transform: scale(1.04) !important;
+          flex: 0 0 ${CARD_WIDTH}px;
+          width: ${CARD_WIDTH}px;
         }
         .member-card-photo-wrap {
           position: relative;
-          overflow: hidden;
           height: 340px;
           border-radius: 4px;
-          background-color: #e8e8e8;
+          overflow: hidden;
+          background-color: #e0e4ec;
         }
         .member-card-photo {
           object-fit: cover;
           object-position: top center;
-          transition: transform 0.4s ease !important;
         }
         .member-card-overlay {
           position: absolute;
@@ -285,6 +195,7 @@ export default function EquipePage() {
           right: 0;
           background: linear-gradient(to top, rgba(0,53,103,0.88) 0%, transparent 100%);
           padding: 48px 14px 14px;
+          pointer-events: none;
         }
         .member-card-name {
           font-size: 15px;
@@ -305,28 +216,9 @@ export default function EquipePage() {
           font-family: Lato, sans-serif;
         }
 
-        /* ── Empty state ──────────────────────────────── */
-        .equipe-empty {
-          padding: 80px;
-          text-align: center;
-          color: #7b7e83;
-          font-size: 15px;
-          font-family: Lato, sans-serif;
-        }
-
-        /* ── Responsive ───────────────────────────────── */
-        @media (max-width: 1200px) {
-          .member-grid { grid-template-columns: repeat(3, 1fr); }
-        }
         @media (max-width: 900px) {
-          .equipe-filter-bar { padding: 16px 24px; flex-direction: column; align-items: flex-start; }
-          .equipe-grid-section { padding: 40px 24px; }
-          .member-grid { grid-template-columns: repeat(2, 1fr); }
-        }
-        @media (max-width: 540px) {
-          .member-card-photo-wrap { height: 220px; }
-          .equipe-search-wrap { width: 100%; }
-          .equipe-search-input { width: 100%; }
+          .carousel-header { padding: 0 24px; }
+          .carousel-viewport { padding: 0 24px; }
         }
       `}</style>
 
@@ -339,58 +231,52 @@ export default function EquipePage() {
         breadcrumb={[{ label: "Home", href: "/" }, { label: "Nossa Equipe" }]}
       />
 
-      {/* Filter bar */}
-      <div className="equipe-filter-bar">
-        <div className="equipe-tabs">
-          <button
-            onClick={() => setActiveGroup("all")}
-            className={`equipe-tab ${activeGroup === "all" ? "equipe-tab-active" : "equipe-tab-inactive"}`}
-          >
-            Todos
-          </button>
-          {groupNames.map((g) => (
-            <button
-              key={g}
-              onClick={() => setActiveGroup(g)}
-              className={`equipe-tab ${activeGroup === g ? "equipe-tab-active" : "equipe-tab-inactive"}`}
-            >
-              {g}
-            </button>
-          ))}
+      <div className="carousel-section">
+        <div className="carousel-header">
+          <h2 className="carousel-title">Nossa Equipe</h2>
+          <div className="carousel-controls">
+            <button className="carousel-btn" onClick={prev} aria-label="Anterior">&#8592;</button>
+            <button className="carousel-btn" onClick={next} aria-label="Próximo">&#8594;</button>
+          </div>
         </div>
 
-        <div className="equipe-search-wrap">
-          <input
-            type="text"
-            className="equipe-search-input"
-            placeholder="Pesquisar por nome..."
-            value={searchInput}
-            onChange={(e) => setSearchInput(e.target.value)}
-            onKeyDown={handleKeyDown}
-            aria-label="Pesquisar por nome"
-          />
-          <button
-            className="equipe-search-btn"
-            onClick={handleSearch}
-            aria-label="Pesquisar"
+        <div
+          className="carousel-viewport"
+          onPointerDown={onPointerDown}
+          onPointerMove={onPointerMove}
+          onPointerUp={onPointerUp}
+          onPointerLeave={onPointerUp}
+        >
+          <div
+            ref={trackRef}
+            className="carousel-track"
+            style={{
+              transform: `translateX(${offset}px)`,
+              transition: isDragging ? "none" : "transform 0.45s cubic-bezier(0.25, 0.46, 0.45, 0.94)",
+            }}
           >
-            🔍
-          </button>
+            {members.map((m) => (
+              <div key={m.name} className="member-card">
+                <div className="member-card-photo-wrap">
+                  <Image
+                    src={m.photo}
+                    alt={m.name}
+                    fill
+                    className="member-card-photo"
+                    sizes="260px"
+                    draggable={false}
+                  />
+                  <div className="member-card-overlay">
+                    <span className="member-card-name">{m.name}</span>
+                  </div>
+                </div>
+                <div className="member-card-info">
+                  <span className="member-card-role">{m.role}</span>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
-      </div>
-
-      {/* Grid */}
-      <div className="equipe-grid-section">
-        {filteredMembers.length === 0 ? (
-          <p className="equipe-empty">Nenhum colaborador encontrado.</p>
-        ) : (
-          visibleGroups.map((g) => {
-            const members = getGroupMembers(g.group);
-            return members.length > 0 ? (
-              <MemberGroup key={g.group} title={g.group} members={members} />
-            ) : null;
-          })
-        )}
       </div>
 
       <Footer />
