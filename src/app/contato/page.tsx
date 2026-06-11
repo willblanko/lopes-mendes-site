@@ -110,7 +110,7 @@ export default function ContatoPage() {
 
               <div style={{ display: "flex", flexDirection: "column", gap: "28px", marginBottom: "48px" }}>
                 {contactInfo.map(({ Icon, label, value, href }) => (
-                  <a key={label} href={href} target={href.startsWith("http") ? "_blank" : undefined}
+                  <a key={href} href={href} target={href.startsWith("http") ? "_blank" : undefined}
                     rel={href.startsWith("http") ? "noopener noreferrer" : undefined}
                     style={{ display: "flex", gap: "16px", alignItems: "flex-start", textDecoration: "none", color: "inherit" }}>
                     <div style={{ width: "44px", height: "44px", backgroundColor: "rgba(1,168,221,0.1)", borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
