@@ -1,155 +1,398 @@
-import type { Metadata } from "next";
+"use client";
+
+import { useState, useMemo } from "react";
 import Image from "next/image";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { PageHero } from "@/components/PageHero";
 
-export const metadata: Metadata = {
-  title: "Nossa Equipe | Lopes Mendes Advogados",
-  description: "Conheça os profissionais do Lopes Mendes Advogados — advogados especializados dedicados a cada área de atuação do escritório.",
-};
+// ─── Types ────────────────────────────────────────────────────────────────────
 
-const partners = [
+interface Member {
+  name: string;
+  role: string;
+  group: string;
+  photo: string;
+}
+
+// ─── Data ─────────────────────────────────────────────────────────────────────
+
+const teamGroups: { group: string; members: Member[] }[] = [
   {
-    name: "Isaac Lopes",
-    role: "Sócio Fundador",
-    areas: ["Direito do Trabalho", "Direito Empresarial"],
-    bio: "Advogado com mais de 15 anos de experiência, especializado em contencioso trabalhista empresarial e consultoria preventiva. Formado pela UERJ com pós-graduação em Direito do Trabalho.",
-    img: "/images/team/isaac-lopes.png",
-    oab: "OAB/RJ 123.456",
+    group: "Sócios",
+    members: [
+      { name: "Isaac Lopes", role: "Sócio Fundador", group: "Sócios", photo: "/images/team/Isaac_Lopes.png" },
+      { name: "Marco Aurélio Mendes", role: "Sócio Fundador", group: "Sócios", photo: "/images/team/Marco_Aurelio_Mendes.png" },
+    ],
   },
   {
-    name: "Marco Aurélio Mendes",
-    role: "Sócio Fundador",
-    areas: ["Direito Civil", "Direito Imobiliário"],
-    bio: "Especialista em transações imobiliárias e litígios civis. Formado pela PUC-Rio com pós-graduação em Direito Civil e Processual Civil. Atua com due diligence e contratos de alto valor.",
-    img: "/images/team/marco-mendes.png",
-    oab: "OAB/RJ 234.567",
+    group: "Cível",
+    members: [
+      { name: "Alex Ribeiro", role: "Liderança Cível", group: "Cível", photo: "/images/team/Alex_Ribeiro.png" },
+      { name: "Daniela de Holanda", role: "Advogada", group: "Cível", photo: "/images/team/Daniela_Holanda.png" },
+      { name: "João Nascimento", role: "Advogado", group: "Cível", photo: "/images/team/Joao_Nascimento.png" },
+      { name: "Antônio Egito", role: "Advogado", group: "Cível", photo: "/images/team/Antonio_Egito.png" },
+      { name: "Lyvia Duarte", role: "Advogada", group: "Cível", photo: "/images/team/Lyvia_Duarte.png" },
+      { name: "Vitória Rebello", role: "Advogada", group: "Cível", photo: "/images/team/Vitoria_Rebello.png" },
+      { name: "Giovana Vasconcelos", role: "Estagiária", group: "Cível", photo: "/images/team/Giovana_Vasconcelos.png" },
+    ],
+  },
+  {
+    group: "Trabalhista",
+    members: [
+      { name: "Raphael Pitta", role: "Advogado", group: "Trabalhista", photo: "/images/team/Raphael_Pitta.png" },
+      { name: "Gustavo Feitoza", role: "Advogado", group: "Trabalhista", photo: "/images/team/Gustavo_Feitoza.png" },
+      { name: "Alex Sander Muniz", role: "Advogado", group: "Trabalhista", photo: "/images/team/Alex_Sander_Muniz.png" },
+      { name: "Taiane Xavier", role: "Advogada", group: "Trabalhista", photo: "/images/team/Taiane_Xavier.png" },
+      { name: "Maria Clara", role: "Estagiária", group: "Trabalhista", photo: "/images/team/Maria_Clara.png" },
+    ],
+  },
+  {
+    group: "Comercial",
+    members: [
+      { name: "Patricia Madeira", role: "Comercial", group: "Comercial", photo: "/images/team/Patricia_Madeira.png" },
+      { name: "Luciano Arsenio", role: "Comercial", group: "Comercial", photo: "/images/team/Luciano_Arsenio.png" },
+    ],
+  },
+  {
+    group: "Administrativo",
+    members: [
+      { name: "Ana Albuquerque", role: "Administrativo", group: "Administrativo", photo: "/images/team/Ana_Albuquerque.png" },
+      { name: "Marcia Lameira", role: "Auxiliar Administrativo", group: "Administrativo", photo: "/images/team/Marcia_Lameira.png" },
+      { name: "Renan Quintaneiro", role: "Controller", group: "Administrativo", photo: "/images/team/Renan_Quintaneiro.png" },
+      { name: "Emily Carolina", role: "Auxiliar Jurídico", group: "Administrativo", photo: "/images/team/Emily_Carolina.png" },
+      { name: "Willian Pereira", role: "Analista de TI", group: "Administrativo", photo: "/images/team/Willian_Pereira.png" },
+    ],
+  },
+  {
+    group: "Serviços Gerais",
+    members: [
+      { name: "Luciana Martins", role: "Governança de Serviços Gerais", group: "Serviços Gerais", photo: "/images/team/Luciana_Martins.png" },
+    ],
   },
 ];
 
-const associates = [
-  {
-    name: "Emily Carolina",
-    role: "Advogada Sênior",
-    area: "Direito Previdenciário",
-    img: "/images/team/emily-carolina.png",
-    oab: "OAB/RJ 345.678",
-  },
-  {
-    name: "Giovana",
-    role: "Advogada",
-    area: "Direito do Consumidor",
-    img: "/images/team/giovana.png",
-    oab: "OAB/RJ 456.789",
-  },
-  {
-    name: "Maria Clara",
-    role: "Advogada",
-    area: "Direito Sucessório",
-    img: "/images/team/maria-clara.png",
-    oab: "OAB/RJ 567.890",
-  },
-  {
-    name: "Willian Pereira",
-    role: "Advogado",
-    area: "Direito Bancário",
-    img: "/images/team/willian-pereira.png",
-    oab: "OAB/RJ 678.901",
-  },
-];
+const allMembers = teamGroups.flatMap((g) => g.members);
+const groupNames = teamGroups.map((g) => g.group);
+
+// ─── MemberCard ───────────────────────────────────────────────────────────────
+
+function MemberCard({ member }: { member: Member }) {
+  return (
+    <div className="member-card">
+      <div className="member-card-photo-wrap">
+        <Image
+          src={member.photo}
+          alt={member.name}
+          fill
+          className="member-card-photo"
+          sizes="(max-width: 540px) 50vw, (max-width: 900px) 33vw, (max-width: 1200px) 25vw, 20vw"
+        />
+        <div className="member-card-overlay">
+          <span className="member-card-name">{member.name}</span>
+        </div>
+      </div>
+      <div className="member-card-info">
+        <span className="member-card-role">{member.role}</span>
+      </div>
+    </div>
+  );
+}
+
+// ─── MemberGroup ──────────────────────────────────────────────────────────────
+
+function MemberGroup({ title, members }: { title: string; members: Member[] }) {
+  if (members.length === 0) return null;
+  return (
+    <div className="member-group">
+      <h2 className="member-group-heading">{title}</h2>
+      <div className="member-grid">
+        {members.map((m) => (
+          <MemberCard key={m.name} member={m} />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// ─── Page ─────────────────────────────────────────────────────────────────────
 
 export default function EquipePage() {
+  const [activeGroup, setActiveGroup] = useState<string>("all");
+  const [searchInput, setSearchInput] = useState("");
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const filteredMembers = useMemo(() => {
+    return allMembers.filter((m) => {
+      const matchesGroup = activeGroup === "all" || m.group === activeGroup;
+      const matchesSearch =
+        searchQuery === "" ||
+        m.name.toLowerCase().includes(searchQuery.toLowerCase());
+      return matchesGroup && matchesSearch;
+    });
+  }, [activeGroup, searchQuery]);
+
+  const visibleGroups = useMemo(() => {
+    return activeGroup === "all"
+      ? teamGroups
+      : teamGroups.filter((g) => g.group === activeGroup);
+  }, [activeGroup]);
+
+  function handleSearch() {
+    setSearchQuery(searchInput);
+  }
+
+  function handleKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
+    if (e.key === "Enter") handleSearch();
+  }
+
+  function getGroupMembers(group: string) {
+    return filteredMembers.filter((m) => m.group === group);
+  }
+
   return (
     <>
+      <style>{`
+        /* ── Filter bar ───────────────────────────────── */
+        .equipe-filter-bar {
+          background-color: white;
+          border-bottom: 1px solid #e9ecf5;
+          padding: 20px 80px;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          gap: 24px;
+          flex-wrap: wrap;
+        }
+        .equipe-tabs {
+          display: flex;
+          align-items: center;
+          gap: 6px;
+          flex-wrap: wrap;
+        }
+        .equipe-tab {
+          padding: 7px 18px;
+          border-radius: 100px;
+          font-size: 13px;
+          font-weight: 500;
+          cursor: pointer;
+          border: none;
+          transition: background-color 0.2s, color 0.2s;
+          font-family: Lato, sans-serif;
+          white-space: nowrap;
+        }
+        .equipe-tab-active {
+          background-color: #003567;
+          color: white;
+        }
+        .equipe-tab-inactive {
+          background-color: transparent;
+          color: #3b3e43;
+        }
+        .equipe-tab-inactive:hover {
+          color: #003567;
+          background-color: #f0f3fa;
+        }
+        .equipe-search-wrap {
+          display: flex;
+          align-items: center;
+          border: 1px solid #c0c4d6;
+          border-radius: 4px;
+          overflow: hidden;
+        }
+        .equipe-search-input {
+          border: none;
+          outline: none;
+          font-size: 13px;
+          font-family: Lato, sans-serif;
+          color: #3b3e43;
+          background: transparent;
+          width: 200px;
+          padding: 8px 12px;
+        }
+        .equipe-search-input::placeholder {
+          color: #a0a4b0;
+        }
+        .equipe-search-btn {
+          border: none;
+          background-color: #003567;
+          color: white;
+          width: 38px;
+          height: 38px;
+          cursor: pointer;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          flex-shrink: 0;
+          transition: background-color 0.2s;
+          font-size: 16px;
+        }
+        .equipe-search-btn:hover {
+          background-color: #004C90;
+        }
+
+        /* ── Grid section ─────────────────────────────── */
+        .equipe-grid-section {
+          background-color: #f7f8fa;
+          padding: 60px 80px;
+        }
+        .member-group {
+          margin-bottom: 64px;
+        }
+        .member-group:last-child {
+          margin-bottom: 0;
+        }
+        .member-group-heading {
+          font-size: 18px;
+          font-weight: 700;
+          color: #003567;
+          border-left: 3px solid #01A8DD;
+          padding-left: 14px;
+          margin: 0 0 32px 0;
+          font-family: Lato, sans-serif;
+          letter-spacing: 0.5px;
+        }
+        .member-grid {
+          display: grid;
+          grid-template-columns: repeat(4, 1fr);
+          gap: 24px;
+        }
+
+        /* ── Member card ──────────────────────────────── */
+        .member-card {
+          display: block;
+          color: inherit;
+        }
+        .member-card:hover .member-card-photo {
+          transform: scale(1.04) !important;
+        }
+        .member-card-photo-wrap {
+          position: relative;
+          overflow: hidden;
+          height: 340px;
+          border-radius: 4px;
+          background-color: #e8e8e8;
+        }
+        .member-card-photo {
+          object-fit: cover;
+          object-position: top center;
+          transition: transform 0.4s ease !important;
+        }
+        .member-card-overlay {
+          position: absolute;
+          bottom: 0;
+          left: 0;
+          right: 0;
+          background: linear-gradient(to top, rgba(0,53,103,0.88) 0%, transparent 100%);
+          padding: 48px 14px 14px;
+        }
+        .member-card-name {
+          font-size: 15px;
+          font-weight: 700;
+          color: white;
+          font-family: Lato, sans-serif;
+          display: block;
+        }
+        .member-card-info {
+          padding: 10px 0 0;
+        }
+        .member-card-role {
+          font-size: 11px;
+          font-weight: 700;
+          color: #01A8DD;
+          letter-spacing: 1px;
+          text-transform: uppercase;
+          font-family: Lato, sans-serif;
+        }
+
+        /* ── Empty state ──────────────────────────────── */
+        .equipe-empty {
+          padding: 80px;
+          text-align: center;
+          color: #7b7e83;
+          font-size: 15px;
+          font-family: Lato, sans-serif;
+        }
+
+        /* ── Responsive ───────────────────────────────── */
+        @media (max-width: 1200px) {
+          .member-grid { grid-template-columns: repeat(3, 1fr); }
+        }
+        @media (max-width: 900px) {
+          .equipe-filter-bar { padding: 16px 24px; flex-direction: column; align-items: flex-start; }
+          .equipe-grid-section { padding: 40px 24px; }
+          .member-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (max-width: 540px) {
+          .member-card-photo-wrap { height: 220px; }
+          .equipe-search-wrap { width: 100%; }
+          .equipe-search-input { width: 100%; }
+        }
+      `}</style>
+
       <Navbar />
-      <main>
-        <PageHero
-          eyebrow="Nossa equipe"
-          title="Profissionais dedicados ao seu caso"
-          subtitle="Conheça os advogados que compõem o Lopes Mendes — cada um especialista na sua área, todos comprometidos com o seu resultado."
-          breadcrumb={[{ label: "Home", href: "/" }, { label: "Nossa Equipe" }]}
-        />
 
-        {/* Sócios */}
-        <section style={{ backgroundColor: "#ffffff", padding: "96px 80px" }} className="equipe-socios">
-          <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
-            <p className="gradient-text" style={{ fontSize: "11px", fontWeight: 700, letterSpacing: "3px", textTransform: "uppercase", marginBottom: "16px" }}>
-              Liderança
-            </p>
-            <h2 style={{ fontSize: "36px", fontWeight: 300, color: "#003567", lineHeight: 1.2, marginBottom: "48px" }}>Sócios Fundadores</h2>
+      <PageHero
+        eyebrow="Nossa equipe"
+        title="Conheça os profissionais do Lopes Mendes"
+        subtitle="Uma equipe dedicada, especializada e comprometida com os melhores resultados para nossos clientes."
+        breadcrumb={[{ label: "Home", href: "/" }, { label: "Nossa Equipe" }]}
+      />
 
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: "40px" }} className="socios-grid">
-              {partners.map((p) => (
-                <div key={p.name} style={{ display: "grid", gridTemplateColumns: "160px 1fr", gap: "32px", alignItems: "start", backgroundColor: "#f7f8fa", padding: "32px" }} className="socio-card">
-                  <div style={{ position: "relative", aspectRatio: "3/4", backgroundColor: "#e8e8e8", overflow: "hidden" }}>
-                    <Image src={p.img} alt={p.name} fill style={{ objectFit: "cover" }} sizes="160px" />
-                  </div>
-                  <div>
-                    <span style={{ fontSize: "11px", fontWeight: 700, letterSpacing: "2px", textTransform: "uppercase", color: "#01A8DD", display: "block", marginBottom: "8px" }}>
-                      {p.role}
-                    </span>
-                    <h3 style={{ fontSize: "22px", fontWeight: 700, color: "#003567", margin: "0 0 4px" }}>{p.name}</h3>
-                    <span style={{ fontSize: "12px", color: "#999", display: "block", marginBottom: "16px" }}>{p.oab}</span>
-                    <div style={{ display: "flex", flexWrap: "wrap" as const, gap: "6px", marginBottom: "16px" }}>
-                      {p.areas.map((a) => (
-                        <span key={a} style={{ fontSize: "11px", fontWeight: 700, letterSpacing: "0.5px", padding: "4px 10px", backgroundColor: "rgba(1,168,221,0.1)", color: "#004C90", borderRadius: "2px" }}>
-                          {a}
-                        </span>
-                      ))}
-                    </div>
-                    <p style={{ fontSize: "13px", color: "#666", lineHeight: 1.75, margin: 0 }}>{p.bio}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
+      {/* Filter bar */}
+      <div className="equipe-filter-bar">
+        <div className="equipe-tabs">
+          <button
+            onClick={() => setActiveGroup("all")}
+            className={`equipe-tab ${activeGroup === "all" ? "equipe-tab-active" : "equipe-tab-inactive"}`}
+          >
+            Todos
+          </button>
+          {groupNames.map((g) => (
+            <button
+              key={g}
+              onClick={() => setActiveGroup(g)}
+              className={`equipe-tab ${activeGroup === g ? "equipe-tab-active" : "equipe-tab-inactive"}`}
+            >
+              {g}
+            </button>
+          ))}
+        </div>
 
-          <style>{`
-            @media (max-width: 768px) {
-              .equipe-socios { padding: 64px 24px !important; }
-              .socios-grid { grid-template-columns: 1fr !important; }
-              .socio-card { grid-template-columns: 1fr !important; }
-            }
-          `}</style>
-        </section>
+        <div className="equipe-search-wrap">
+          <input
+            type="text"
+            className="equipe-search-input"
+            placeholder="Pesquisar por nome..."
+            value={searchInput}
+            onChange={(e) => setSearchInput(e.target.value)}
+            onKeyDown={handleKeyDown}
+            aria-label="Pesquisar por nome"
+          />
+          <button
+            className="equipe-search-btn"
+            onClick={handleSearch}
+            aria-label="Pesquisar"
+          >
+            🔍
+          </button>
+        </div>
+      </div>
 
-        {/* Associados */}
-        <section style={{ backgroundColor: "#f7f8fa", padding: "96px 80px" }} className="equipe-assoc">
-          <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
-            <p className="gradient-text" style={{ fontSize: "11px", fontWeight: 700, letterSpacing: "3px", textTransform: "uppercase", marginBottom: "16px" }}>
-              Equipe
-            </p>
-            <h2 style={{ fontSize: "36px", fontWeight: 300, color: "#003567", lineHeight: 1.2, marginBottom: "48px" }}>Advogados Associados</h2>
+      {/* Grid */}
+      <div className="equipe-grid-section">
+        {filteredMembers.length === 0 ? (
+          <p className="equipe-empty">Nenhum colaborador encontrado.</p>
+        ) : (
+          visibleGroups.map((g) => {
+            const members = getGroupMembers(g.group);
+            return members.length > 0 ? (
+              <MemberGroup key={g.group} title={g.group} members={members} />
+            ) : null;
+          })
+        )}
+      </div>
 
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "24px" }} className="assoc-grid">
-              {associates.map((a) => (
-                <div key={a.name} className="lm-card-hover" style={{ backgroundColor: "#ffffff" }}>
-                  <div style={{ position: "relative", aspectRatio: "1/1", overflow: "hidden", backgroundColor: "#e8e8e8" }}>
-                    <Image src={a.img} alt={a.name} fill style={{ objectFit: "cover" }} sizes="(max-width: 768px) 100vw, 25vw" />
-                  </div>
-                  <div style={{ padding: "20px" }}>
-                    <span style={{ fontSize: "11px", fontWeight: 700, letterSpacing: "1.5px", textTransform: "uppercase", color: "#01A8DD", display: "block", marginBottom: "6px" }}>
-                      {a.role}
-                    </span>
-                    <h3 style={{ fontSize: "16px", fontWeight: 700, color: "#003567", margin: "0 0 4px" }}>{a.name}</h3>
-                    <p style={{ fontSize: "13px", color: "#888", margin: "0 0 8px" }}>{a.area}</p>
-                    <span style={{ fontSize: "11px", color: "#bbb" }}>{a.oab}</span>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <style>{`
-            @media (max-width: 1024px) { .assoc-grid { grid-template-columns: repeat(2, 1fr) !important; } }
-            @media (max-width: 768px) {
-              .equipe-assoc { padding: 64px 24px !important; }
-              .assoc-grid { grid-template-columns: 1fr !important; }
-            }
-          `}</style>
-        </section>
-      </main>
       <Footer />
     </>
   );
