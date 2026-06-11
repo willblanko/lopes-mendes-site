@@ -1,3 +1,6 @@
+"use client";
+
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { ArrowRightIcon } from "@/components/icons";
 
@@ -13,11 +16,32 @@ const areas = [
 ];
 
 export function AreasSection() {
+  const sectionRef = useRef<HTMLElement>(null);
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const el = sectionRef.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) { setVisible(true); observer.disconnect(); } },
+      { threshold: 0.1 }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
   return (
-    <section style={{ backgroundColor: "#f7f8fa", padding: "96px 80px" }} className="areas-section">
+    <section ref={sectionRef} style={{ backgroundColor: "#f7f8fa", padding: "96px 80px" }} className="areas-section">
       <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
         {/* Header */}
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", marginBottom: "56px", flexWrap: "wrap" as const, gap: "24px" }}>
+        <div
+          style={{
+            display: "flex", justifyContent: "space-between", alignItems: "flex-end", marginBottom: "56px", flexWrap: "wrap" as const, gap: "24px",
+            opacity: visible ? 1 : 0,
+            transform: visible ? "translateY(0)" : "translateY(20px)",
+            transition: "opacity 0.6s ease, transform 0.6s ease",
+          }}
+        >
           <div>
             <p className="gradient-text" style={{ fontSize: "11px", fontWeight: 700, letterSpacing: "3px", textTransform: "uppercase", marginBottom: "16px" }}>
               Áreas de atuação
@@ -36,7 +60,7 @@ export function AreasSection() {
           </Link>
         </div>
 
-        {/* Grid */}
+        {/* Grid — staggered cards */}
         <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "2px" }} className="areas-grid">
           {areas.map((area, i) => (
             <Link
@@ -56,6 +80,11 @@ export function AreasSection() {
                   display: "flex",
                   flexDirection: "column" as const,
                   gap: "12px",
+                  // Stagger entrance
+                  opacity: visible ? 1 : 0,
+                  transform: visible ? "translateY(0)" : "translateY(32px)",
+                  // @ts-expect-error custom property
+                  "--transition-delay": `${i * 60}ms`,
                 }}
               >
                 <div style={{ fontSize: "11px", fontWeight: 700, letterSpacing: "2px", textTransform: "uppercase", color: "#01A8DD" }}>
@@ -79,6 +108,22 @@ export function AreasSection() {
 
       <style>{`
         .area-card-border:hover { border-bottom-color: #01A8DD !important; }
+
+        /* Stagger delays via nth-child */
+        .areas-grid > a:nth-child(1) > div { transition-delay: 0ms !important; }
+        .areas-grid > a:nth-child(2) > div { transition-delay: 60ms !important; }
+        .areas-grid > a:nth-child(3) > div { transition-delay: 120ms !important; }
+        .areas-grid > a:nth-child(4) > div { transition-delay: 180ms !important; }
+        .areas-grid > a:nth-child(5) > div { transition-delay: 240ms !important; }
+        .areas-grid > a:nth-child(6) > div { transition-delay: 300ms !important; }
+        .areas-grid > a:nth-child(7) > div { transition-delay: 360ms !important; }
+        .areas-grid > a:nth-child(8) > div { transition-delay: 420ms !important; }
+
+        /* Override: hover transitions should be instant (no delay) */
+        .areas-grid > a > div:hover {
+          transition-delay: 0ms !important;
+        }
+
         @media (max-width: 1024px) {
           .areas-grid { grid-template-columns: repeat(2, 1fr) !important; }
         }

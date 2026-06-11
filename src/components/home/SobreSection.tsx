@@ -1,12 +1,35 @@
+"use client";
+
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { ArrowRightIcon } from "@/components/icons";
 
 export function SobreSection() {
+  const sectionRef = useRef<HTMLElement>(null);
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const el = sectionRef.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) { setVisible(true); observer.disconnect(); } },
+      { threshold: 0.15 }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
   return (
-    <section style={{ backgroundColor: "#ffffff", padding: "96px 80px" }} className="sobre-section">
+    <section ref={sectionRef} style={{ backgroundColor: "#ffffff", padding: "96px 80px" }} className="sobre-section">
       <div style={{ maxWidth: "1200px", margin: "0 auto", display: "grid", gridTemplateColumns: "1fr 1fr", gap: "80px", alignItems: "center" }} className="sobre-grid">
-        {/* Left: text */}
-        <div>
+        {/* Left: text — slides from left */}
+        <div
+          style={{
+            opacity: visible ? 1 : 0,
+            transform: visible ? "translateX(0)" : "translateX(-40px)",
+            transition: "opacity 0.8s ease, transform 0.8s ease",
+          }}
+        >
           <p
             className="gradient-text"
             style={{ fontSize: "11px", fontWeight: 700, letterSpacing: "3px", textTransform: "uppercase", marginBottom: "20px" }}
@@ -34,8 +57,15 @@ export function SobreSection() {
           </Link>
         </div>
 
-        {/* Right: accent block */}
-        <div style={{ position: "relative" }}>
+        {/* Right: accent block — slides from right */}
+        <div
+          style={{
+            position: "relative",
+            opacity: visible ? 1 : 0,
+            transform: visible ? "translateX(0)" : "translateX(40px)",
+            transition: "opacity 0.8s ease 0.2s, transform 0.8s ease 0.2s",
+          }}
+        >
           <div
             style={{
               backgroundColor: "#003567",

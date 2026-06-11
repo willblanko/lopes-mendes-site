@@ -1,12 +1,35 @@
+"use client";
+
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { ArrowRightIcon, PhoneIcon, MailIcon } from "@/components/icons";
 
 export function CtaSection() {
+  const sectionRef = useRef<HTMLElement>(null);
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const el = sectionRef.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) { setVisible(true); observer.disconnect(); } },
+      { threshold: 0.15 }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
   return (
-    <section style={{ backgroundColor: "#f7f8fa", padding: "96px 80px" }} className="cta-section">
+    <section ref={sectionRef} style={{ backgroundColor: "#f7f8fa", padding: "96px 80px" }} className="cta-section">
       <div style={{ maxWidth: "1200px", margin: "0 auto", display: "grid", gridTemplateColumns: "1.2fr 1fr", gap: "80px", alignItems: "center" }} className="cta-grid">
-        {/* Left */}
-        <div>
+        {/* Left — slides from left */}
+        <div
+          style={{
+            opacity: visible ? 1 : 0,
+            transform: visible ? "translateX(0)" : "translateX(-32px)",
+            transition: "opacity 0.8s ease, transform 0.8s ease",
+          }}
+        >
           <p className="gradient-text" style={{ fontSize: "11px", fontWeight: 700, letterSpacing: "3px", textTransform: "uppercase", marginBottom: "20px" }}>
             Entre em contato
           </p>
@@ -37,8 +60,17 @@ export function CtaSection() {
           </div>
         </div>
 
-        {/* Right: contact info */}
-        <div style={{ display: "flex", flexDirection: "column" as const, gap: "24px" }}>
+        {/* Right: contact cards — slide from right with stagger */}
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column" as const,
+            gap: "24px",
+            opacity: visible ? 1 : 0,
+            transform: visible ? "translateX(0)" : "translateX(32px)",
+            transition: "opacity 0.8s ease 0.2s, transform 0.8s ease 0.2s",
+          }}
+        >
           {[
             { Icon: PhoneIcon, label: "Telefone", value: "21 3040-2875", href: "tel:+552130402875" },
             { Icon: MailIcon, label: "E-mail", value: "contato@lopesmendes.adv.br", href: "mailto:contato@lopesmendes.adv.br" },
@@ -52,7 +84,7 @@ export function CtaSection() {
                 padding: "24px 28px", backgroundColor: "#ffffff",
                 textDecoration: "none",
                 borderLeft: "4px solid #01A8DD",
-                transition: "box-shadow 0.2s ease",
+                transition: "box-shadow 0.2s ease, transform 0.2s ease",
               }}
             >
               <div style={{ width: "44px", height: "44px", backgroundColor: "rgba(1,168,221,0.1)", borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
@@ -64,7 +96,10 @@ export function CtaSection() {
               </div>
             </a>
           ))}
-          <div style={{ padding: "24px 28px", backgroundColor: "#ffffff", borderLeft: "4px solid #004C90" }}>
+          <div
+            className="contact-card-hover"
+            style={{ padding: "24px 28px", backgroundColor: "#ffffff", borderLeft: "4px solid #004C90", transition: "box-shadow 0.2s ease, transform 0.2s ease" }}
+          >
             <div style={{ fontSize: "11px", fontWeight: 700, letterSpacing: "1.5px", textTransform: "uppercase", color: "#004C90", marginBottom: "8px" }}>Endereço</div>
             <div style={{ fontSize: "15px", color: "#003567", lineHeight: 1.6 }}>
               Praça Floriano, 19 — 22º Andar<br />
@@ -78,7 +113,10 @@ export function CtaSection() {
       <style>{`
         .btn-dark-hover:hover { background-color: #004C90 !important; }
         .btn-blue-hover:hover { background-color: #0197c7 !important; }
-        .contact-card-hover:hover { box-shadow: 0 4px 20px rgba(0,53,103,0.1); }
+        .contact-card-hover:hover {
+          box-shadow: 0 4px 20px rgba(0,53,103,0.1) !important;
+          transform: translateY(-2px) !important;
+        }
         @media (max-width: 768px) {
           .cta-section { padding: 64px 24px !important; }
           .cta-grid { grid-template-columns: 1fr !important; gap: 48px !important; }

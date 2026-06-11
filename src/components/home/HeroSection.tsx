@@ -1,11 +1,33 @@
 "use client";
 
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { ArrowRightIcon } from "@/components/icons";
 
 export function HeroSection() {
+  const [mounted, setMounted] = useState(false);
+  const [scrollY, setScrollY] = useState(0);
+  const sectionRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    // Trigger entrance animation after first paint
+    const id = requestAnimationFrame(() => setMounted(true));
+
+    function onScroll() {
+      setScrollY(window.scrollY);
+    }
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => {
+      cancelAnimationFrame(id);
+      window.removeEventListener("scroll", onScroll);
+    };
+  }, []);
+
+  const parallaxOffset = scrollY * 0.12;
+
   return (
     <section
+      ref={sectionRef}
       style={{
         backgroundColor: "#003567",
         minHeight: "100vh",
@@ -15,7 +37,7 @@ export function HeroSection() {
         overflow: "hidden",
       }}
     >
-      {/* Grafismo diagonal-lines — right side */}
+      {/* Grafismo diagonal-lines — parallax */}
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
         src="/images/grafismo/diagonal-lines.svg"
@@ -29,10 +51,12 @@ export function HeroSection() {
           width: "auto",
           opacity: 0.07,
           pointerEvents: "none",
+          transform: `translateY(${parallaxOffset}px)`,
+          willChange: "transform",
         }}
       />
 
-      {/* Grafismo chevron-arrows — bottom right accent */}
+      {/* Grafismo chevron-arrows — slower parallax */}
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
         src="/images/grafismo/chevron-arrows.svg"
@@ -45,6 +69,24 @@ export function HeroSection() {
           height: "60%",
           width: "auto",
           opacity: 0.04,
+          pointerEvents: "none",
+          transform: `translateY(${parallaxOffset * 0.6}px)`,
+          willChange: "transform",
+        }}
+      />
+
+      {/* Animated gradient orb — background accent */}
+      <div
+        aria-hidden="true"
+        style={{
+          position: "absolute",
+          top: "20%",
+          right: "15%",
+          width: "500px",
+          height: "500px",
+          borderRadius: "50%",
+          background: "radial-gradient(circle, rgba(1,168,221,0.06) 0%, transparent 70%)",
+          transform: `translateY(${parallaxOffset * 0.3}px)`,
           pointerEvents: "none",
         }}
       />
@@ -70,6 +112,9 @@ export function HeroSection() {
             letterSpacing: "3px",
             textTransform: "uppercase",
             marginBottom: "24px",
+            opacity: mounted ? 1 : 0,
+            transform: mounted ? "translateY(0)" : "translateY(16px)",
+            transition: "opacity 0.6s ease 0.1s, transform 0.6s ease 0.1s",
           }}
         >
           Advocacia estratégica no Rio de Janeiro
@@ -85,6 +130,9 @@ export function HeroSection() {
             maxWidth: "700px",
             margin: "0 0 24px",
             fontFamily: "'Lato', sans-serif",
+            opacity: mounted ? 1 : 0,
+            transform: mounted ? "translateY(0)" : "translateY(24px)",
+            transition: "opacity 0.7s ease 0.25s, transform 0.7s ease 0.25s",
           }}
         >
           Destravamos futuros com{" "}
@@ -102,6 +150,9 @@ export function HeroSection() {
             lineHeight: 1.75,
             margin: "0 0 48px",
             fontWeight: 300,
+            opacity: mounted ? 1 : 0,
+            transform: mounted ? "translateY(0)" : "translateY(20px)",
+            transition: "opacity 0.7s ease 0.4s, transform 0.7s ease 0.4s",
           }}
         >
           Assessoria completa para empresas e famílias que precisam de
@@ -109,7 +160,16 @@ export function HeroSection() {
         </p>
 
         {/* CTAs */}
-        <div style={{ display: "flex", gap: "16px", flexWrap: "wrap" as const }}>
+        <div
+          style={{
+            display: "flex",
+            gap: "16px",
+            flexWrap: "wrap" as const,
+            opacity: mounted ? 1 : 0,
+            transform: mounted ? "translateY(0)" : "translateY(16px)",
+            transition: "opacity 0.6s ease 0.55s, transform 0.6s ease 0.55s",
+          }}
+        >
           <Link
             href="/contato"
             style={{
@@ -164,9 +224,11 @@ export function HeroSection() {
             alignItems: "center",
             gap: "12px",
             color: "rgba(255,255,255,0.35)",
+            opacity: mounted ? 1 : 0,
+            transition: "opacity 0.6s ease 0.8s",
           }}
         >
-          <div style={{ width: "1px", height: "40px", background: "rgba(255,255,255,0.2)" }} />
+          <div className="scroll-line" style={{ width: "1px", height: "40px", background: "rgba(255,255,255,0.2)" }} />
           <span style={{ fontSize: "11px", letterSpacing: "2px", textTransform: "uppercase" }}>
             Scroll
           </span>
@@ -179,6 +241,14 @@ export function HeroSection() {
             padding-left: 24px !important;
             padding-right: 24px !important;
           }
+        }
+        @keyframes scrollPulse {
+          0%, 100% { transform: scaleY(1); opacity: 0.35; }
+          50% { transform: scaleY(0.5); opacity: 0.7; }
+        }
+        .scroll-line {
+          animation: scrollPulse 2s ease-in-out infinite;
+          transform-origin: top center;
         }
       `}</style>
     </section>
