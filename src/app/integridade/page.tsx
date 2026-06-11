@@ -354,16 +354,16 @@ export default function IntegridadePage() {
         /* Two-column layout */
         .integ-body {
           display: grid;
-          grid-template-columns: 1fr 300px;
+          grid-template-columns: 1fr 380px;
           background: white;
           min-height: 600px;
         }
         .integ-main {
-          padding: 56px 64px 72px 80px;
+          padding: 56px 56px 72px 80px;
           border-right: 1px solid #e9ecf5;
         }
         .integ-sidebar {
-          padding: 48px 32px;
+          padding: 48px 40px;
           background: #f7f8fa;
         }
         .integ-sidebar-sticky {
@@ -378,7 +378,7 @@ export default function IntegridadePage() {
         .integ-form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
 
         @media (max-width: 1024px) {
-          .integ-body { grid-template-columns: 1fr 260px; }
+          .integ-body { grid-template-columns: 1fr 320px; }
           .integ-main { padding: 48px 40px 64px 48px; }
         }
         @media (max-width: 768px) {
