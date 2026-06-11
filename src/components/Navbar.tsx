@@ -12,6 +12,7 @@ const navLinks = [
   { label: "Blog", href: "/blog" },
   { label: "Contato", href: "/contato" },
   { label: "Trabalhe Conosco", href: "/trabalhe-conosco" },
+  { label: "Integridade", href: "/integridade" },
 ];
 
 function LopesmendesLogo({ white = true }: { white?: boolean }) {
