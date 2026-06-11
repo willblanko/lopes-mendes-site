@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { PageHero } from "@/components/PageHero";
+import { RevealSection } from "@/components/RevealSection";
 import { ArrowRightIcon } from "@/components/icons";
 
 export const metadata: Metadata = {
@@ -77,50 +78,46 @@ export default function AreasAtuacaoPage() {
         <section style={{ backgroundColor: "#ffffff", padding: "80px 80px" }} className="areas-list">
           <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
             {areas.map((area, i) => (
-              <div
-                key={area.num}
-                style={{
-                  display: "grid",
-                  gridTemplateColumns: "80px 1fr auto",
-                  gap: "40px",
-                  alignItems: "start",
-                  padding: "48px 0",
-                  borderBottom: i < areas.length - 1 ? "1px solid #e8e8e8" : "none",
-                }}
-                className="area-row"
-              >
-                {/* Number */}
-                <div className="gradient-text" style={{ fontSize: "36px", fontWeight: 700, lineHeight: 1 }}>
-                  {area.num}
-                </div>
-
-                {/* Content */}
-                <div>
-                  <h2 style={{ fontSize: "24px", fontWeight: 700, color: "#003567", margin: "0 0 16px", lineHeight: 1.2 }}>
-                    {area.title}
-                  </h2>
-                  <p style={{ fontSize: "15px", color: "#555", lineHeight: 1.8, margin: "0 0 24px", maxWidth: "600px" }}>
-                    {area.desc}
-                  </p>
-                  <div style={{ display: "flex", flexWrap: "wrap" as const, gap: "8px" }}>
-                    {area.services.map((s) => (
-                      <span key={s} style={{ fontSize: "12px", fontWeight: 400, padding: "5px 12px", border: "1px solid #e8e8e8", color: "#555", borderRadius: "2px" }}>
-                        {s}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-
-                {/* CTA */}
-                <Link
-                  href="/contato"
-                  style={{ display: "inline-flex", alignItems: "center", gap: "8px", backgroundColor: "transparent", color: "#01A8DD", fontSize: "13px", fontWeight: 700, textDecoration: "none", whiteSpace: "nowrap" as const, paddingTop: "6px" }}
-                  className="area-saiba-mais"
+              <RevealSection key={area.num} threshold={0.08}>
+                <div
+                  style={{
+                    display: "grid",
+                    gridTemplateColumns: "80px 1fr auto",
+                    gap: "40px",
+                    alignItems: "start",
+                    padding: "48px 0",
+                    borderBottom: i < areas.length - 1 ? "1px solid #e8e8e8" : "none",
+                  }}
+                  className="area-row"
                 >
-                  Consultar
-                  <ArrowRightIcon style={{ width: "14px", height: "14px" }} />
-                </Link>
-              </div>
+                  <div className="gradient-text" style={{ fontSize: "36px", fontWeight: 700, lineHeight: 1 }}>
+                    {area.num}
+                  </div>
+                  <div>
+                    <h2 style={{ fontSize: "24px", fontWeight: 700, color: "#003567", margin: "0 0 16px", lineHeight: 1.2 }}>
+                      {area.title}
+                    </h2>
+                    <p style={{ fontSize: "15px", color: "#555", lineHeight: 1.8, margin: "0 0 24px", maxWidth: "600px" }}>
+                      {area.desc}
+                    </p>
+                    <div style={{ display: "flex", flexWrap: "wrap" as const, gap: "8px" }}>
+                      {area.services.map((s) => (
+                        <span key={s} style={{ fontSize: "12px", fontWeight: 400, padding: "5px 12px", border: "1px solid #e8e8e8", color: "#555", borderRadius: "2px" }}>
+                          {s}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                  <Link
+                    href="/contato"
+                    style={{ display: "inline-flex", alignItems: "center", gap: "8px", backgroundColor: "transparent", color: "#01A8DD", fontSize: "13px", fontWeight: 700, textDecoration: "none", whiteSpace: "nowrap" as const, paddingTop: "6px" }}
+                    className="area-saiba-mais"
+                  >
+                    Consultar
+                    <ArrowRightIcon style={{ width: "14px", height: "14px" }} />
+                  </Link>
+                </div>
+              </RevealSection>
             ))}
           </div>
 
@@ -133,7 +130,7 @@ export default function AreasAtuacaoPage() {
         </section>
 
         {/* CTA */}
-        <section style={{ backgroundColor: "#003567", padding: "64px 80px", position: "relative", overflow: "hidden" }} className="areas-cta">
+        <RevealSection as="section" style={{ backgroundColor: "#003567", padding: "64px 80px", position: "relative", overflow: "hidden" }} className="areas-cta">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src="/images/grafismo/diagonal-lines.svg" alt="" aria-hidden="true"
             style={{ position: "absolute", top: 0, right: 0, height: "100%", width: "auto", opacity: 0.06, pointerEvents: "none" }} />
@@ -155,7 +152,7 @@ export default function AreasAtuacaoPage() {
           <style>{`
             .areas-cta { padding: 48px 24px !important; }
           `}</style>
-        </section>
+        </RevealSection>
       </main>
       <Footer />
     </>

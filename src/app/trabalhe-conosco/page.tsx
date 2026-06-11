@@ -4,6 +4,7 @@ import { useRef, useState } from "react";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { PageHero } from "@/components/PageHero";
+import { RevealSection } from "@/components/RevealSection";
 import { MailIcon } from "@/components/icons";
 
 const areas = [
@@ -111,6 +112,7 @@ export default function TrabalheConoscoPage() {
             className="trabalhe-grid"
           >
             {/* Left: info */}
+            <RevealSection from="left">
             <div>
               <p className="gradient-text" style={{ fontSize: "11px", fontWeight: 700, letterSpacing: "3px", textTransform: "uppercase", marginBottom: "20px" }}>
                 Por que a Lopes Mendes?
@@ -157,8 +159,10 @@ export default function TrabalheConoscoPage() {
                 </div>
               </div>
             </div>
+            </RevealSection>
 
             {/* Right: form */}
+            <RevealSection from="right" delay={150}>
             <div>
               <div style={{ backgroundColor: "#f7f8fa", padding: "48px" }}>
                 {status === "success" ? (
@@ -338,6 +342,7 @@ export default function TrabalheConoscoPage() {
                 )}
               </div>
             </div>
+            </RevealSection>
           </div>
 
           <style>{`

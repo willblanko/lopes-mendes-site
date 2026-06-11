@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { PageHero } from "@/components/PageHero";
+import { RevealSection } from "@/components/RevealSection";
 import { ArrowRightIcon } from "@/components/icons";
 
 export const metadata: Metadata = {
@@ -102,6 +103,7 @@ export default function BlogPage() {
             </div>
 
             {/* Featured post */}
+            <RevealSection>
             <div style={{ backgroundColor: "#003567", padding: "48px", marginBottom: "32px", position: "relative", overflow: "hidden" }} className="featured-post">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src="/images/grafismo/diagonal-lines.svg" alt="" aria-hidden="true"
@@ -121,11 +123,13 @@ export default function BlogPage() {
                 </div>
               </div>
             </div>
+            </RevealSection>
 
             {/* Grid */}
             <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "24px" }} className="blog-grid">
-              {posts.slice(1).map((post) => (
-                <article key={post.slug} className="lm-card-hover" style={{ backgroundColor: "#ffffff" }}>
+              {posts.slice(1).map((post, i) => (
+                <RevealSection key={post.slug} delay={i * 80}>
+                <article className="lm-card-hover" style={{ backgroundColor: "#ffffff" }}>
                   <div style={{ padding: "28px" }}>
                     <span style={{ fontSize: "11px", fontWeight: 700, letterSpacing: "1.5px", textTransform: "uppercase", color: "#01A8DD", display: "block", marginBottom: "12px" }}>
                       {post.category}
@@ -143,6 +147,7 @@ export default function BlogPage() {
                     </div>
                   </div>
                 </article>
+                </RevealSection>
               ))}
             </div>
           </div>

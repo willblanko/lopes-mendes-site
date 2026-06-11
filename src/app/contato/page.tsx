@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { PageHero } from "@/components/PageHero";
+import { RevealSection } from "@/components/RevealSection";
 import { PhoneIcon, MailIcon, MapPinIcon, InstagramIcon, LinkedinIcon, WhatsappIcon } from "@/components/icons";
 
 const contactInfo = [
@@ -98,6 +99,7 @@ export default function ContatoPage() {
           <div style={{ maxWidth: "1200px", margin: "0 auto", display: "grid", gridTemplateColumns: "1fr 1.4fr", gap: "80px" }} className="contato-grid">
 
             {/* Left: contact info */}
+            <RevealSection from="left">
             <div>
               <p className="gradient-text" style={{ fontSize: "11px", fontWeight: 700, letterSpacing: "3px", textTransform: "uppercase", marginBottom: "20px" }}>
                 Informações
@@ -153,8 +155,10 @@ export default function ContatoPage() {
                 </div>
               </div>
             </div>
+            </RevealSection>
 
             {/* Right: form */}
+            <RevealSection from="right" delay={150}>
             <div>
               <div style={{ backgroundColor: "#f7f8fa", padding: "48px" }}>
                 <p className="gradient-text" style={{ fontSize: "11px", fontWeight: 700, letterSpacing: "3px", textTransform: "uppercase", marginBottom: "20px" }}>
@@ -234,6 +238,7 @@ export default function ContatoPage() {
                 )}
               </div>
             </div>
+            </RevealSection>
           </div>
 
           <style>{`

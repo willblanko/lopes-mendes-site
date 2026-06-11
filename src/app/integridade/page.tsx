@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { PageHero } from "@/components/PageHero";
+import { RevealSection } from "@/components/RevealSection";
 import { MailIcon } from "@/components/icons";
 
 // ─── Tabs ─────────────────────────────────────────────────────────────────────
@@ -395,23 +396,28 @@ export default function IntegridadePage() {
 
       {/* Tab content */}
       <div className="integ-content">
-        {activeTab === "formulario" && <FormularioTab />}
-        {activeTab === "etica" && <EticaTab />}
-        {activeTab === "privacidade" && <PrivacidadeTab />}
+        <RevealSection key={activeTab}>
+          {activeTab === "formulario" && <FormularioTab />}
+          {activeTab === "etica" && <EticaTab />}
+          {activeTab === "privacidade" && <PrivacidadeTab />}
+        </RevealSection>
       </div>
 
       {/* Canais diretos */}
       <div className="integ-channels">
         <div style={{ maxWidth: "900px" }}>
-          <p className="gradient-text" style={{ fontSize: "11px", fontWeight: 700, letterSpacing: "3px", textTransform: "uppercase", marginBottom: "12px" }}>
-            Canais diretos
-          </p>
-          <h2 style={{ fontSize: "28px", fontWeight: 300, color: "#003567", marginBottom: "32px" }}>
-            Fale diretamente com nossa equipe
-          </h2>
+          <RevealSection>
+            <p className="gradient-text" style={{ fontSize: "11px", fontWeight: 700, letterSpacing: "3px", textTransform: "uppercase", marginBottom: "12px" }}>
+              Canais diretos
+            </p>
+            <h2 style={{ fontSize: "28px", fontWeight: 300, color: "#003567", marginBottom: "32px" }}>
+              Fale diretamente com nossa equipe
+            </h2>
+          </RevealSection>
 
           <div className="integ-channel-grid">
             {/* DPO */}
+            <RevealSection from="left">
             <div className="integ-channel-card">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src="/images/grafismo/diagonal-lines.svg" alt="" aria-hidden="true"
@@ -434,8 +440,10 @@ export default function IntegridadePage() {
                 </a>
               </div>
             </div>
+            </RevealSection>
 
             {/* Gerente de Integridade */}
+            <RevealSection from="right" delay={100}>
             <div className="integ-channel-card">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src="/images/grafismo/diagonal-lines.svg" alt="" aria-hidden="true"
@@ -458,6 +466,7 @@ export default function IntegridadePage() {
                 </a>
               </div>
             </div>
+            </RevealSection>
           </div>
         </div>
       </div>
