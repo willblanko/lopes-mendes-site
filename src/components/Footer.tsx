@@ -79,6 +79,7 @@ export function Footer() {
               { label: "Nossa Equipe", href: "/equipe" },
               { label: "Blog / Notícias", href: "/blog" },
               { label: "Contato", href: "/contato" },
+              { label: "Trabalhe Conosco", href: "/trabalhe-conosco" },
             ].map(({ label, href }) => (
               <li key={href}>
                 <Link href={href} className="footer-nav-link">
