@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { PageHero } from "@/components/PageHero";
@@ -25,6 +26,18 @@ export default function SobrePage() {
           subtitle="Conheça a história, os valores e as pessoas por trás do Lopes Mendes Advogados."
           breadcrumb={[{ label: "Home", href: "/" }, { label: "Quem Somos" }]}
         />
+
+        {/* Imagem full-width do escritório */}
+        <div style={{ position: "relative", width: "100%", height: "520px", overflow: "hidden" }}>
+          <Image
+            src="/images/escritorio.jpg"
+            alt="Escritório Lopes Mendes Advogados"
+            fill
+            style={{ objectFit: "cover", objectPosition: "center 40%" }}
+            priority
+            sizes="100vw"
+          />
+        </div>
 
         {/* História */}
         <section style={{ backgroundColor: "#ffffff", padding: "96px 80px" }} className="sobre-historia">
@@ -114,6 +127,54 @@ export default function SobrePage() {
             @media (max-width: 768px) {
               .sobre-valores { padding: 64px 24px !important; }
               .valores-grid { grid-template-columns: 1fr !important; }
+            }
+          `}</style>
+        </section>
+
+        {/* Prêmios e Reconhecimentos */}
+        <section style={{ backgroundColor: "#ffffff", padding: "96px 80px" }} className="sobre-premios">
+          <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
+            <div style={{ marginBottom: "56px" }}>
+              <p className="gradient-text" style={{ fontSize: "11px", fontWeight: 700, letterSpacing: "3px", textTransform: "uppercase", marginBottom: "16px" }}>
+                Reconhecimento
+              </p>
+              <h2 style={{ fontSize: "36px", fontWeight: 300, color: "#003567", lineHeight: 1.2, margin: 0 }}>
+                Prêmios e Reconhecimentos
+              </h2>
+            </div>
+
+            {/* Placeholder grid — substituir pelos prêmios reais */}
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "24px" }} className="premios-grid">
+              {[1, 2, 3, 4, 5, 6].map((i) => (
+                <div key={i} style={{
+                  border: "1px solid #e9ecf5",
+                  borderRadius: "4px",
+                  padding: "32px",
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "12px",
+                  backgroundColor: "#f7f8fa",
+                }}>
+                  <div style={{ width: "48px", height: "48px", borderRadius: "4px", backgroundColor: "#e0e7f0" }} />
+                  <div style={{ height: "12px", borderRadius: "2px", backgroundColor: "#dde3ed", width: "60%" }} />
+                  <div style={{ height: "10px", borderRadius: "2px", backgroundColor: "#edf0f5", width: "85%" }} />
+                  <div style={{ height: "10px", borderRadius: "2px", backgroundColor: "#edf0f5", width: "70%" }} />
+                </div>
+              ))}
+            </div>
+
+            <p style={{ marginTop: "40px", fontSize: "13px", color: "#aaa", fontStyle: "italic", textAlign: "center" }}>
+              Em breve — os prêmios e reconhecimentos serão adicionados aqui.
+            </p>
+          </div>
+
+          <style>{`
+            @media (max-width: 900px) {
+              .sobre-premios { padding: 64px 24px !important; }
+              .premios-grid { grid-template-columns: repeat(2, 1fr) !important; }
+            }
+            @media (max-width: 540px) {
+              .premios-grid { grid-template-columns: 1fr !important; }
             }
           `}</style>
         </section>

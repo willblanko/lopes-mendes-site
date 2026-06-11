@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState, useEffect, useCallback } from "react";
+import { useRef, useState, useEffect, useCallback, useMemo } from "react";
 import Image from "next/image";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
@@ -36,80 +36,101 @@ const members = [
 const CARD_WIDTH = 260;
 const CARD_GAP = 24;
 const STEP = CARD_WIDTH + CARD_GAP;
+const N = members.length;
 
 // ─── Page ─────────────────────────────────────────────────────────────────────
 
 export default function EquipePage() {
-  const trackRef = useRef<HTMLDivElement>(null);
-  const [offset, setOffset] = useState(0);
-  const [isDragging, setIsDragging] = useState(false);
-  const dragStart = useRef(0);
-  const dragOffset = useRef(0);
+  // Triple the array so we can loop in both directions
+  const tripled = useMemo(() => [...members, ...members, ...members], []);
+
+  // Start in the middle copy
+  const [index, setIndex] = useState(N);
+  const [animated, setAnimated] = useState(true);
   const autoRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const isDragging = useRef(false);
+  const dragStartX = useRef(0);
+  const dragStartIndex = useRef(N);
 
-  const maxOffset = -(members.length * STEP - CARD_GAP);
+  const offset = -index * STEP;
 
-  const clamp = useCallback((val: number) => Math.min(0, Math.max(maxOffset, val)), [maxOffset]);
-
-  // auto-scroll
+  // After a no-animation jump, re-enable animation in next frame
   useEffect(() => {
-    autoRef.current = setInterval(() => {
-      setOffset((prev) => {
-        const next = prev - STEP;
-        return next < maxOffset ? 0 : next;
-      });
-    }, 3000);
-    return () => { if (autoRef.current) clearInterval(autoRef.current); };
-  }, [maxOffset]);
+    if (!animated) {
+      const id = requestAnimationFrame(() =>
+        requestAnimationFrame(() => setAnimated(true))
+      );
+      return () => cancelAnimationFrame(id);
+    }
+  }, [animated]);
 
-  function pauseAuto() {
+  // Normalise index back to the middle copy after animation completes
+  function handleTransitionEnd() {
+    if (index >= 2 * N) {
+      setAnimated(false);
+      setIndex((i) => i - N);
+    } else if (index < N) {
+      setAnimated(false);
+      setIndex((i) => i + N);
+    }
+  }
+
+  const startAuto = useCallback(() => {
     if (autoRef.current) clearInterval(autoRef.current);
-  }
-  function resumeAuto() {
     autoRef.current = setInterval(() => {
-      setOffset((prev) => {
-        const next = prev - STEP;
-        return next < maxOffset ? 0 : next;
-      });
+      setAnimated(true);
+      setIndex((i) => i + 1);
     }, 3000);
-  }
+  }, []);
+
+  const stopAuto = useCallback(() => {
+    if (autoRef.current) clearInterval(autoRef.current);
+  }, []);
+
+  useEffect(() => {
+    startAuto();
+    return stopAuto;
+  }, [startAuto, stopAuto]);
 
   function prev() {
-    pauseAuto();
-    setOffset((v) => clamp(v + STEP));
-    resumeAuto();
-  }
-  function next() {
-    pauseAuto();
-    setOffset((v) => {
-      const n = v - STEP;
-      return n < maxOffset ? 0 : n;
-    });
-    resumeAuto();
+    stopAuto();
+    setAnimated(true);
+    setIndex((i) => i - 1);
+    startAuto();
   }
 
-  // drag / touch
+  function next() {
+    stopAuto();
+    setAnimated(true);
+    setIndex((i) => i + 1);
+    startAuto();
+  }
+
+  // ── Drag support ──
   function onPointerDown(e: React.PointerEvent) {
-    setIsDragging(true);
-    dragStart.current = e.clientX;
-    dragOffset.current = offset;
-    pauseAuto();
+    isDragging.current = true;
+    dragStartX.current = e.clientX;
+    dragStartIndex.current = index;
+    stopAuto();
     (e.target as HTMLElement).setPointerCapture(e.pointerId);
   }
+
   function onPointerMove(e: React.PointerEvent) {
-    if (!isDragging) return;
-    const delta = e.clientX - dragStart.current;
-    setOffset(clamp(dragOffset.current + delta));
+    if (!isDragging.current) return;
+    const delta = e.clientX - dragStartX.current;
+    const moved = Math.round(-delta / STEP);
+    setAnimated(false);
+    setIndex(dragStartIndex.current + moved);
   }
+
   function onPointerUp(e: React.PointerEvent) {
-    if (!isDragging) return;
-    setIsDragging(false);
-    const delta = e.clientX - dragStart.current;
-    // snap to nearest card
-    const raw = dragOffset.current + delta;
-    const snapped = Math.round(raw / STEP) * STEP;
-    setOffset(clamp(snapped));
-    resumeAuto();
+    if (!isDragging.current) return;
+    isDragging.current = false;
+    const delta = e.clientX - dragStartX.current;
+    const moved = Math.round(-delta / STEP);
+    setAnimated(true);
+    setIndex(dragStartIndex.current + moved);
+    startAuto();
   }
 
   return (
@@ -248,15 +269,15 @@ export default function EquipePage() {
           onPointerLeave={onPointerUp}
         >
           <div
-            ref={trackRef}
             className="carousel-track"
             style={{
               transform: `translateX(${offset}px)`,
-              transition: isDragging ? "none" : "transform 0.45s cubic-bezier(0.25, 0.46, 0.45, 0.94)",
+              transition: animated ? "transform 0.45s cubic-bezier(0.25, 0.46, 0.45, 0.94)" : "none",
             }}
+            onTransitionEnd={handleTransitionEnd}
           >
-            {members.map((m) => (
-              <div key={m.name} className="member-card">
+            {tripled.map((m, i) => (
+              <div key={i} className="member-card">
                 <div className="member-card-photo-wrap">
                   <Image
                     src={m.photo}
