@@ -1,13 +1,56 @@
+"use client";
+
+import { useEffect, useRef, useState } from "react";
+
 const stats = [
-  { value: "10+", label: "Anos de experiência" },
-  { value: "500+", label: "Clientes atendidos" },
-  { value: "8", label: "Áreas de atuação" },
-  { value: "98%", label: "Satisfação dos clientes" },
+  { value: 10, suffix: "+", label: "Anos de experiência" },
+  { value: 500, suffix: "+", label: "Clientes atendidos" },
+  { value: 8, suffix: "", label: "Áreas de atuação" },
+  { value: 98, suffix: "%", label: "Satisfação dos clientes" },
 ];
 
+function CountUp({ target, suffix, started }: { target: number; suffix: string; started: boolean }) {
+  const [current, setCurrent] = useState(0);
+
+  useEffect(() => {
+    if (!started) return;
+    const duration = 1600;
+    const steps = 60;
+    const increment = target / steps;
+    let step = 0;
+    const id = setInterval(() => {
+      step++;
+      if (step >= steps) {
+        setCurrent(target);
+        clearInterval(id);
+      } else {
+        setCurrent(Math.floor(increment * step));
+      }
+    }, duration / steps);
+    return () => clearInterval(id);
+  }, [started, target]);
+
+  return <>{current}{suffix}</>;
+}
+
 export function StatsSection() {
+  const ref = useRef<HTMLElement>(null);
+  const [started, setStarted] = useState(false);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) { setStarted(true); observer.disconnect(); } },
+      { threshold: 0.3 }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
   return (
     <section
+      ref={ref}
       style={{
         background: "linear-gradient(90deg, #01A8DD 0%, #004C90 100%)",
         padding: "64px 80px",
@@ -24,7 +67,7 @@ export function StatsSection() {
         {stats.map((stat, i) => (
           <div key={i} style={{ textAlign: "center" as const }}>
             <div style={{ fontSize: "clamp(40px, 5vw, 64px)", fontWeight: 700, color: "#ffffff", lineHeight: 1, marginBottom: "8px", fontFamily: "'Lato', sans-serif" }}>
-              {stat.value}
+              <CountUp target={stat.value} suffix={stat.suffix} started={started} />
             </div>
             <div style={{ fontSize: "13px", color: "rgba(255,255,255,0.75)", letterSpacing: "0.5px", fontWeight: 400 }}>
               {stat.label}

@@ -7,9 +7,10 @@ import { PageHero } from "@/components/PageHero";
 import { PhoneIcon, MailIcon, MapPinIcon, InstagramIcon, LinkedinIcon, WhatsappIcon } from "@/components/icons";
 
 const contactInfo = [
-  { Icon: PhoneIcon, label: "Telefone", value: "21 3040-2875", href: "tel:+552130402875" },
+  { Icon: PhoneIcon, label: "Telefone", value: "21 3040-2875", href: "https://api.whatsapp.com/send?phone=552130402875" },
+  { Icon: PhoneIcon, label: "Telefone", value: "21 3962-0841", href: "https://api.whatsapp.com/send?phone=552139620841" },
   { Icon: MailIcon, label: "E-mail", value: "contato@lopesmendes.adv.br", href: "mailto:contato@lopesmendes.adv.br" },
-  { Icon: MapPinIcon, label: "Endereço", value: "Praça Floriano, 19 — 22º Andar\nCentro, Rio de Janeiro — RJ\nCEP 20031-924", href: "https://maps.google.com/?q=Praça+Floriano+19+Rio+de+Janeiro" },
+  { Icon: MapPinIcon, label: "Endereço", value: "Praça Floriano, 19 — 22º Andar\nCentro, Rio de Janeiro — RJ\nCEP 20031-924", href: "https://maps.app.goo.gl/aw1v9WG2tFKNaYbR6" },
 ];
 
 const areas = [
@@ -139,7 +140,8 @@ export default function ContatoPage() {
                   {[
                     { href: "https://www.instagram.com/lopesmendesadv/", Icon: InstagramIcon, label: "Instagram" },
                     { href: "https://www.linkedin.com/company/lopesmendesadv/", Icon: LinkedinIcon, label: "LinkedIn" },
-                    { href: "https://api.whatsapp.com/send?phone=552130402875", Icon: WhatsappIcon, label: "WhatsApp" },
+                    { href: "https://api.whatsapp.com/send?phone=552130402875", Icon: WhatsappIcon, label: "WhatsApp 1" },
+                    { href: "https://api.whatsapp.com/send?phone=552139620841", Icon: WhatsappIcon, label: "WhatsApp 2" },
                   ].map(({ href, Icon, label }) => (
                     <a key={label} href={href} target="_blank" rel="noopener noreferrer" aria-label={label}
                       style={{ width: "40px", height: "40px", border: "1px solid #e8e8e8", borderRadius: "4px", display: "flex", alignItems: "center", justifyContent: "center", color: "#555", transition: "border-color 0.2s, color 0.2s" }}
