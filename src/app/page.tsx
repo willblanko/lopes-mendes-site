@@ -1,11 +1,12 @@
 import { Navbar } from "@/components/Navbar";
-import { HeroSection } from "@/components/HeroSection";
-import { QuemSomosSection } from "@/components/QuemSomosSection";
-import { NossoTimeSection } from "@/components/NossoTimeSection";
-import { AreasSection } from "@/components/AreasSection";
-import { NewsSection } from "@/components/NewsSection";
-import { ContatoSection } from "@/components/ContatoSection";
 import { Footer } from "@/components/Footer";
+import { HeroSection } from "@/components/home/HeroSection";
+import { SobreSection } from "@/components/home/SobreSection";
+import { AreasSection } from "@/components/home/AreasSection";
+import { StatsSection } from "@/components/home/StatsSection";
+import { EquipeSection } from "@/components/home/EquipeSection";
+import { ManifestoSection } from "@/components/home/ManifestoSection";
+import { CtaSection } from "@/components/home/CtaSection";
 
 export default function Home() {
   return (
@@ -13,11 +14,12 @@ export default function Home() {
       <Navbar />
       <main>
         <HeroSection />
-        <QuemSomosSection />
-        <NossoTimeSection />
+        <SobreSection />
         <AreasSection />
-        <NewsSection />
-        <ContatoSection />
+        <StatsSection />
+        <EquipeSection />
+        <ManifestoSection />
+        <CtaSection />
       </main>
       <Footer />
     </>
